@@ -1,23 +1,24 @@
-# NetHunter Terminal Emulator
+NeoTerm
+=======
+[![Travis build status](https://travis-ci.org/NeoTerm/NeoTerm.svg?branch=master)](https://travis-ci.org/NeoTerm/NeoTerm)
+![](https://img.shields.io/badge/language-Kotlin-green.svg)
+![](https://img.shields.io/badge/license-GPLv3-000000.svg)
 
-This is a new fork of the Android Terminal Emulator so we can adapt it to our neeeds for Kali NetHunter.
+A modern-designed android terminal emulator for the 21st century.
 
-Dependencies running the terminal:
+### Our Pledge
 
-    Needs a full installation of Kali NetHunter (including chroot) 
+Originally, NeoTerm was designed as the front end of Termux to provide some functions that Termux didn't have, but we
+found it very convenient. In continuous development, we discovered our goal: to be the best terminal for Android.
 
+### Help & Documentation
 
+View on [GitBook](https://neoterm.gitbooks.io/neoterm-wiki/content)
 
-Building from sources:
+View on [GitHub](https://github.com/NeoTerm/NeoTerm-Wiki)
 
-(Todo) see: https://github.com/jmingov/NetHunter-Terminal-Emulator/blob/master/docs/Building.md
+### Download
 
+[GitHub Release Page](https://github.com/NeoTerm/NeoTerm/releases)
 
-Since the original project has "ended" we'll include the credits and licenses below:
-
-
-Original author: https://github.com/jackpal
-
-Original project: https://github.com/jackpal/Android-Terminal-Emulator
-
-License: The same as the original project. (Thouse files are [included](https://github.com/jmingov/NetHunter-Terminal-Emulator/blob/master/NOTICE) in this project too.)
+[lzzySoft's F-Droid repo](https://apt.izzysoft.de/fdroid/index/apk/io.neoterm) (thanks to @lzzySoft)

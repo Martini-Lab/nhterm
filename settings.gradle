@@ -1,2 +1,1 @@
-include ':emulatorview', ':libtermexec'
-include ':term'
+include ':app', ':chrome-tabs', ':NeoLang', ':Xorg', ':NeoTermBridge'
