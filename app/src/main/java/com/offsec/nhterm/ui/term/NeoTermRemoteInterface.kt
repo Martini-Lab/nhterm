@@ -81,11 +81,12 @@ class NeoTermRemoteInterface : AppCompatActivity(), ServiceConnection {
           { finish() }
           return
         }
+        val executablePath = intent.getStringExtra(EXTRA_EXECUTABLE)
         val command = intent.getStringExtra(EXTRA_COMMAND)
         val foreground = intent.getBooleanExtra(EXTRA_FOREGROUND, true)
         val session = intent.getStringExtra(EXTRA_SESSION_ID)
 
-        openTerm(command, SessionId.of(session), foreground)
+        openTerm(executablePath, command, SessionId.of(session), foreground)
       }
 
       else -> openTerm(null, null)
@@ -201,7 +202,7 @@ class NeoTermRemoteInterface : AppCompatActivity(), ServiceConnection {
 
     val data = Intent()
     data.putExtra(EXTRA_SESSION_ID, session.mHandle)
-    setResult(AppCompatActivity.RESULT_OK, data)
+    setResult(RESULT_OK, data)
 
     if (foreground) {
       // Set current session to our new one
@@ -222,11 +223,13 @@ class NeoTermRemoteInterface : AppCompatActivity(), ServiceConnection {
   }
 
   private fun openTerm(
+    executablePath: String?,
     initialCommand: String?,
     sessionId: SessionId? = null,
     foreground: Boolean = true
   ) {
     val parameter = ShellParameter()
+      .executablePath(executablePath)
       .initialCommand(initialCommand)
       .callback(TermSessionCallback())
       .systemShell(detectSystemShell())

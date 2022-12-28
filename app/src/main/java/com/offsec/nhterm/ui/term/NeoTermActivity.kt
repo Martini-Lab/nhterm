@@ -76,6 +76,9 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
       )
     }
 
+    // Do the assset update on startup
+    startup_assets()
+
     val SDCARD_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1
     if (ContextCompat.checkSelfPermission(
         this,
@@ -341,22 +344,21 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
       return
     }
 
-    // Always update the file on the opening of this app
-    Runtime.getRuntime().exec("mkdir -p "+" "+"/data/data/com.offsec.nhterm/files/usr").destroy();
-    extractAssetsDir("bin", "/data/data/com.offsec.nhterm/files/usr/bin/")
-    Thread.sleep(500)
-    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/bash")
-    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/kali")
-
     if (!isRecreating()) {
-      if (SetupHelper.needSetup()) {
-        val intent = Intent(this, SetupActivity::class.java)
-        //startActivityForResult(intent, REQUEST_SETUP)
-        //return
-      }
       enterMain()
       update_colors()
     }
+  }
+
+  fun startup_assets() {
+    // Always update the file on the opening of this app
+    Runtime.getRuntime().exec("mkdir -p "+" "+"/data/data/com.offsec.nhterm/files/usr/").waitFor()
+    Executer("/system/bin/rm -f /data/data/com.offsec.nhterm/files/usr/bin/*")
+    Thread.sleep(400)
+    extractAssetsDir("bin", "/data/data/com.offsec.nhterm/files/usr/bin/")
+    Thread.sleep(400)
+    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/bash")
+    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/kali")
   }
 
   fun Executer(command: String?): String? {
@@ -567,14 +569,13 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
   private fun addNewNetHunterSession(sessionName: String?) {
     val sessionCallback = TermSessionCallback()
     val viewClient = TermViewClient(this)
+
     val parameter = ShellParameter()
       .callback(sessionCallback)
-      .systemShell(false)
       .executablePath("/data/data/com.offsec.nhterm/files/usr/bin/kali")
-      .initialCommand("su -c " + '"' + "clear && " + NeoPreference.getLoginShellName() + '"')
     val session = termService!!.createTermSession(parameter)
 
-    session.mSessionName = sessionName ?: generateSessionName("KALI Linux")
+    session.mSessionName = sessionName ?: generateSessionName("KALI LINUX")
 
     val tab = createTab(session.mSessionName) as TermTab
     tab.termData.initializeSessionWith(session, sessionCallback, viewClient)

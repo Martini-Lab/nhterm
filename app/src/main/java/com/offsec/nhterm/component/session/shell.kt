@@ -15,6 +15,8 @@ import com.offsec.nhterm.component.font.FontComponent
 import com.offsec.nhterm.component.profile.NeoProfile
 import com.offsec.nhterm.frontend.session.terminal.TermSessionCallback
 import java.io.File
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
 
 /**
  * @author kiva
@@ -173,8 +175,19 @@ open class ShellTermSession private constructor(
 
   override fun initializeEmulator(columns: Int, rows: Int) {
     super.initializeEmulator(columns, rows)
-    sendInitialCommand(shellProfile.initialCommand)
-    sendInitialCommand(initialCommand)
+
+    ////
+    // As we do bash script trickery to move over from
+    // System shell -> Kali chroot
+    // Then lets delay all initial cmd's for 2 seconds
+    ////
+
+    val backgroundExecutor: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
+    backgroundExecutor.schedule(
+      {
+        sendInitialCommand(shellProfile.initialCommand)
+        sendInitialCommand(initialCommand)
+      }, 2, java.util.concurrent.TimeUnit.SECONDS)
   }
 
   override fun getExitDescription(exitCode: Int): String {

@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.icu.util.TimeUnit
 import android.net.wifi.WifiManager
-import android.os.Binder
-import android.os.Build
-import android.os.IBinder
-import android.os.PowerManager
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import com.offsec.nhterm.R
@@ -20,6 +18,8 @@ import com.offsec.nhterm.component.session.XSession
 import com.offsec.nhterm.ui.term.NeoTermActivity
 import com.offsec.nhterm.utils.NLog
 import com.offsec.nhterm.utils.Terminals
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
 
 
 /**
@@ -123,7 +123,9 @@ class NeoTermService : Service() {
     val session = mTerminalSessions.find { it.mHandle == sessionId.sessionId }
       ?: throw IllegalArgumentException("cannot find session by given id")
 
-    session.write(parameter.initialCommand + "\n")
+    if (parameter.initialCommand?.isNotEmpty() == true) {
+      session.write(parameter.initialCommand + "\n")
+    }
     return session
   }
 
