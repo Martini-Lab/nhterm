@@ -1,1 +1,1 @@
-include ':app', ':chrome-tabs', ':NeoLang', ':Xorg', ':NeoTermBridge'
+include ':nhterm', ':chrome-tabs', ':NeoLang', ':Xorg', ':NeoTermBridge'
