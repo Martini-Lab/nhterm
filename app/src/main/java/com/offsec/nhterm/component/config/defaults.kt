@@ -31,7 +31,7 @@ object NeoTermPath {
   const val APT_BIN_PATH = "$USR_PATH/bin/apt"
   const val LIB_PATH = "$USR_PATH/lib"
 
-  const val CUSTOM_PATH = "$HOME_PATH/.nhterm"
+  const val CUSTOM_PATH = "$ROOT_PATH/usr/home/.nhterm"
   const val NEOTERM_LOGIN_SHELL_PATH = "$CUSTOM_PATH/shell"
   const val EKS_PATH = "$CUSTOM_PATH/eks"
   const val EKS_DEFAULT_FILE = "$EKS_PATH/default.nl"

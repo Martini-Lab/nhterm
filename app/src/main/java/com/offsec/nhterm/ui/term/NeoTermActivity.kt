@@ -181,6 +181,10 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
         addNewAndroidSession("Android")
         true
       }
+      R.id.menu_item_new_root_session -> {
+        addNewRootSession("Android SU")
+        true
+      }
       else -> item?.let { super.onOptionsItemSelected(it) }
     }
   }
@@ -578,6 +582,24 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     val session = termService!!.createTermSession(parameter)
 
     session.mSessionName = sessionName ?: generateSessionName("KALI LINUX")
+
+    val tab = createTab(session.mSessionName) as TermTab
+    tab.termData.initializeSessionWith(session, sessionCallback, viewClient)
+
+    addNewTab(tab, createRevealAnimation())
+    switchToSession(tab)
+  }
+
+  private fun addNewRootSession(sessionName: String?) {
+    val sessionCallback = TermSessionCallback()
+    val viewClient = TermViewClient(this)
+
+    val parameter = ShellParameter()
+      .callback(sessionCallback)
+      .executablePath("/data/data/com.offsec.nhterm/files/usr/bin/android-su")
+    val session = termService!!.createTermSession(parameter)
+
+    session.mSessionName = sessionName ?: generateSessionName("ANDROID SU")
 
     val tab = createTab(session.mSessionName) as TermTab
     tab.termData.initializeSessionWith(session, sessionCallback, viewClient)
