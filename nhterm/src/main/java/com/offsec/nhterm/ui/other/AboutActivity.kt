@@ -17,6 +17,9 @@ import de.psdev.licensesdialog.model.Notice
 import de.psdev.licensesdialog.model.Notices
 import com.offsec.nhterm.App
 import com.offsec.nhterm.R
+import com.offsec.nhterm.utils.extractAssetsDir
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 
 /**
@@ -145,14 +148,49 @@ class AboutActivity : AppCompatActivity() {
         .setMessage(R.string.reset_app_warning)
         .setPositiveButton(R.string.yes) { _, _ ->
           resetApp()
+          resetisdone()
         }
         .setNegativeButton(android.R.string.no, null)
         .show()
     }
   }
 
+  private fun resetisdone() {
+    AlertDialog.Builder(this)
+      .setMessage(R.string.done)
+      .setPositiveButton(R.string.ok) { _, _ ->
+        return@setPositiveButton
+      }
+      .show()
+  }
+
   private fun resetApp() {
-    startActivity(Intent(this, SetupActivity::class.java))
+    // Manual way of resetting required assets
+    Runtime.getRuntime().exec("mkdir -p "+" "+"/data/data/com.offsec.nhterm/files/usr/").waitFor()
+    Executer("/system/bin/rm -rf /data/data/com.offsec.nhterm/files/usr/bin")
+    Thread.sleep(1200)
+    extractAssetsDir("bin", "/data/data/com.offsec.nhterm/files/usr/bin/")
+    Thread.sleep(800)
+    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/bash") // Static bash for arm ( works for *64 too )
+    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/kali") // Kali chroot scriptlet
+    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/android-su") // Android su scriptlet
+  }
+
+  fun Executer(command: String?): String? {
+    val output = StringBuilder()
+    val p: Process
+    try {
+      p = Runtime.getRuntime().exec(command)
+      p.waitFor()
+      val reader = BufferedReader(InputStreamReader(p.inputStream))
+      var line: String?
+      while (reader.readLine().also { line = it } != null) {
+        output.append(line).append('\n')
+      }
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+    return output.toString()
   }
 
   private fun openUrl(url: String) {

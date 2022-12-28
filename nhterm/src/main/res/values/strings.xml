@@ -182,8 +182,8 @@
   <string name="sorry_for_development">This feature is still under development so it is only available on DEBUG
     builds.\n
   </string>
-  <string name="dangerous_zone">Dangerous Zone</string>
-  <string name="reset_app_warning">You will have to re-setup later, confirm?</string>
+  <string name="dangerous_zone">Danger Zone</string>
+  <string name="reset_app_warning">This will delete and re-copy required files to boot kali chroot, confirm?</string>
 
   <string name="default_source_url" translatable="false">https://example.com/nhterm
   </string>
