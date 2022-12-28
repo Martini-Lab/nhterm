@@ -50,12 +50,31 @@ abstract class IExtraButton : View.OnClickListener {
     const val KEY_ARROW_LEFT_TEXT = "Left"
     const val KEY_ARROW_RIGHT_TEXT = "Right"
     const val KEY_SHOW_ALL_BUTTONS = "···"
-    const val KEY_TOGGLE_IME = "Im"
+    const val KEY_TOGGLE_IME = "⌨"
 
     const val KEY_ARROW_UP = "▲"
     const val KEY_ARROW_DOWN = "▼"
     const val KEY_ARROW_LEFT = "◀"
     const val KEY_ARROW_RIGHT = "▶"
+
+    // Function keys
+    const val KEY_FN = "Fn"
+    const val KEY_F1 = "F1"
+    const val KEY_F2 = "F2"
+    const val KEY_F3 = "F3"
+    const val KEY_F4 = "F4"
+    const val KEY_F5 = "F5"
+    const val KEY_F6 = "F6"
+    const val KEY_F7 = "F7"
+    const val KEY_F8 = "F8"
+    const val KEY_F9 = "F9"
+    const val KEY_F10 = "F10"
+    const val KEY_F11 = "F11"
+    const val KEY_F12 = "F12"
+
+    // Extra keys
+    const val KEY_DEL   = "Del"
+    const val KEY_ENTER = "Enter"
 
     var NORMAL_TEXT_COLOR = 0xFFFFFFFF.toInt()
     var SELECTED_TEXT_COLOR = 0xFF80DEEA.toInt()
@@ -79,6 +98,27 @@ abstract class IExtraButton : View.OnClickListener {
         KEY_HOME -> keyCode = KeyEvent.KEYCODE_MOVE_HOME
         KEY_END -> keyCode = KeyEvent.KEYCODE_MOVE_END
         "―" -> chars = "-"
+
+        // Function keys
+        KEY_FN -> keyCode = KeyEvent.KEYCODE_FUNCTION
+        KEY_F1 -> keyCode = KeyEvent.KEYCODE_F1
+        KEY_F2 -> keyCode = KeyEvent.KEYCODE_F2
+        KEY_F3 -> keyCode = KeyEvent.KEYCODE_F3
+        KEY_F4 -> keyCode = KeyEvent.KEYCODE_F4
+        KEY_F5 -> keyCode = KeyEvent.KEYCODE_F5
+        KEY_F6 -> keyCode = KeyEvent.KEYCODE_F6
+        KEY_F7 -> keyCode = KeyEvent.KEYCODE_F7
+        KEY_F8 -> keyCode = KeyEvent.KEYCODE_F8
+        KEY_F9 -> keyCode = KeyEvent.KEYCODE_F9
+        KEY_F10 -> keyCode = KeyEvent.KEYCODE_F10
+        KEY_F11 -> keyCode = KeyEvent.KEYCODE_F11
+        KEY_F12 -> keyCode = KeyEvent.KEYCODE_F12
+
+        // Extra keys
+        KEY_DEL -> keyCode = KeyEvent.KEYCODE_DEL
+        KEY_ENTER -> keyCode = KeyEvent.KEYCODE_ENTER
+
+        // If not declared then push the undefined keyword as given
         else -> chars = keyName
       }
 

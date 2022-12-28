@@ -2,6 +2,8 @@ package com.offsec.nhterm.frontend.session.view.extrakey
 
 import android.content.Context
 import android.graphics.Typeface
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.util.AttributeSet
 import android.view.*
 import android.widget.GridLayout
@@ -27,7 +29,7 @@ class ExtraKeysView(context: Context, attrs: AttributeSet) : LinearLayout(contex
     private val ARROW_DOWN = ArrowButton(IExtraButton.KEY_ARROW_DOWN)
     private val ARROW_LEFT = ArrowButton(IExtraButton.KEY_ARROW_LEFT)
     private val ARROW_RIGHT = ArrowButton(IExtraButton.KEY_ARROW_RIGHT)
-    private val TOGGLE_IME = object : ControlButton(IExtraButton.KEY_TOGGLE_IME) {
+    private val TOGGLE_IME = object : ControlButton(KEY_TOGGLE_IME) {
       override fun onClick(view: View) {
         EventBus.getDefault().post(ToggleImeEvent())
       }
@@ -203,10 +205,12 @@ class ExtraKeysView(context: Context, attrs: AttributeSet) : LinearLayout(contex
     outerButton.text = extraButton.displayText
     outerButton.setPadding(0, 0, 0, 0)
     outerButton.setTextColor(IExtraButton.NORMAL_TEXT_COLOR)
-    outerButton.setAllCaps(false)
+    outerButton.isAllCaps = false
 
     outerButton.setOnClickListener {
-      outerButton.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+      val vibrator = context.getSystemService(Vibrator::class.java)
+      vibrator.vibrate(40)
+
       val root = rootView
       extraButton.onClick(root)
     }
@@ -214,7 +218,8 @@ class ExtraKeysView(context: Context, attrs: AttributeSet) : LinearLayout(contex
   }
 
   private fun initBuiltinKeys() {
-    addBuiltinKey(ESC)
+    // Second Row
+    addBuiltinKey(CTRL)
     addBuiltinKey(TAB)
     addBuiltinKey(PAGE_DOWN)
     addBuiltinKey(ARROW_LEFT)
@@ -222,7 +227,8 @@ class ExtraKeysView(context: Context, attrs: AttributeSet) : LinearLayout(contex
     addBuiltinKey(ARROW_RIGHT)
     addBuiltinKey(TOGGLE_IME)
 
-    addBuiltinKey(CTRL)
+    // First Row
+    addBuiltinKey(ESC)
     addBuiltinKey(ALT)
     addBuiltinKey(PAGE_UP)
     addBuiltinKey(HOME)

@@ -47,11 +47,11 @@
             android:padding="16dp">
 
             <ImageView
-              android:layout_width="48dp"
-              android:layout_height="48dp"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
               android:layout_gravity="center_vertical"
-              android:scaleType="centerCrop"
-              app:srcCompat="@mipmap/about_logo"/>
+              android:scaleType="center"
+              android:src="@mipmap/ic_launcher_foreground"/>
 
             <TextView
               android:layout_width="wrap_content"

@@ -14,6 +14,12 @@
     android:title="@string/pref_general_initial_command"/>
 
   <CheckBoxPreference
+    android:defaultValue="true"
+    android:key="@string/key_general_vibrate"
+    android:summary="@string/pref_general_vibrate_desc"
+    android:title="@string/pref_general_vibrate"/>
+
+  <CheckBoxPreference
     android:defaultValue="false"
     android:key="@string/key_generaL_backspace_map_to_esc"
     android:summary="@string/pref_general_backspace_map_to_esc_desc"

@@ -117,6 +117,14 @@ class AboutActivity : AppCompatActivity() {
           GnuGeneralPublicLicense30()
         )
       )
+      notices.addNotice(
+        Notice(
+          "NeoTerm",
+          "https://github.com/NeoTerm/NeoTerm",
+          "Copyright (c) 2021 imkiva",
+          GnuGeneralPublicLicense30()
+        )
+      )
       LicensesDialog.Builder(this)
         .setNotices(notices)
         .setIncludeOwnLicense(true)
@@ -129,7 +137,7 @@ class AboutActivity : AppCompatActivity() {
     }
 
     findViewById<View>(R.id.about_source_code_view).setOnClickListener {
-      openUrl("https://github.com/NeoTerm/NeoTerm")
+      openUrl("https://gitlab.com/kalilinux/nethunter/apps/kali-nethunter-term")
     }
 
     findViewById<View>(R.id.about_reset_app_view).setOnClickListener {
