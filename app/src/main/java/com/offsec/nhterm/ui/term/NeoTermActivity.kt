@@ -351,14 +351,16 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
   }
 
   fun startup_assets() {
-    // Always update the file on the opening of this app
+    // Always update the files on the startup of this app
+    // Great for noobies who delete stuff and ask why its broken
     Runtime.getRuntime().exec("mkdir -p "+" "+"/data/data/com.offsec.nhterm/files/usr/").waitFor()
-    Executer("/system/bin/rm -f /data/data/com.offsec.nhterm/files/usr/bin/*")
+    Executer("/system/bin/rm -rf /data/data/com.offsec.nhterm/files/usr/bin")
     Thread.sleep(400)
     extractAssetsDir("bin", "/data/data/com.offsec.nhterm/files/usr/bin/")
     Thread.sleep(400)
-    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/bash")
-    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/kali")
+    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/bash") // Static bash for arm ( works for *64 too )
+    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/kali") // Kali chroot scriptlet
+    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/android-su") // Android su scriptlet
   }
 
   fun Executer(command: String?): String? {
