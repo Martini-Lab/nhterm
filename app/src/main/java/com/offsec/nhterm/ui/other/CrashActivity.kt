@@ -4,7 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import io.nhterm.R
+import com.offsec.nhterm.R
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
 

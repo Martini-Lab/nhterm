@@ -6,12 +6,12 @@ import android.util.AttributeSet
 import android.view.*
 import android.widget.GridLayout
 import android.widget.LinearLayout
-import io.nhterm.R
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.config.NeoPreference
-import io.nhterm.component.config.NeoTermPath
-import io.nhterm.component.extrakey.ExtraKeyComponent
-import io.nhterm.frontend.session.terminal.ToggleImeEvent
+import com.offsec.nhterm.R
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.component.extrakey.ExtraKeyComponent
+import com.offsec.nhterm.frontend.session.terminal.ToggleImeEvent
 import org.greenrobot.eventbus.EventBus
 import java.io.File
 

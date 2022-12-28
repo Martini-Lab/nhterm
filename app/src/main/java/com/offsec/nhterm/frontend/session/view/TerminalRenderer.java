@@ -11,7 +11,7 @@ import com.offsec.nhterm.backend.TerminalRow;
 import com.offsec.nhterm.backend.TextStyle;
 import com.offsec.nhterm.backend.WcWidth;
 
-import io.nhterm.backend.*;
+import com.offsec.nhterm.backend.*;
 
 /**
  * Renderer of a {@link TerminalEmulator} into a {@link Canvas}.

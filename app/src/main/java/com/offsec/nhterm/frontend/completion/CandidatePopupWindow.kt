@@ -9,12 +9,12 @@ import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.PopupWindow
 import android.widget.TextView
-import io.nhterm.R
+import com.offsec.nhterm.R
 import com.offsec.nhterm.backend.TerminalColors
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.colorscheme.ColorSchemeComponent
-import io.nhterm.component.completion.CompletionCandidate
-import io.nhterm.component.completion.OnCandidateSelectedListener
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.colorscheme.ColorSchemeComponent
+import com.offsec.nhterm.component.completion.CompletionCandidate
+import com.offsec.nhterm.component.completion.OnCandidateSelectedListener
 import com.offsec.nhterm.frontend.session.view.TerminalView
 
 /**
@@ -29,7 +29,7 @@ class CandidatePopupWindow(val context: Context) {
   private var candidateAdapter: CandidateAdapter? = null
   private var candidateListView: ListView? = null
 
-  fun show(terminalView: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView) {
+  fun show(terminalView: TerminalView) {
     if (popupWindow == null && !wantsToFinish) {
       popupWindow = createPopupWindow()
     }
@@ -137,7 +137,7 @@ class CandidatePopupWindow(val context: Context) {
 
     init {
       val colorScheme = ComponentManager.getComponent<ColorSchemeComponent>().getCurrentColorScheme()
-      val textColor = _root_ide_package_.com.offsec.nhterm.backend.TerminalColors.parse(colorScheme.foregroundColor)
+      val textColor = TerminalColors.parse(colorScheme.foregroundColor)
       display.setTextColor(textColor)
       description.setTextColor(textColor)
     }

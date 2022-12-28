@@ -1,6 +1,6 @@
 package com.offsec.nhterm.frontend.session.terminal
 
-import io.nhterm.ui.term.TermTab
+import com.offsec.nhterm.ui.term.TermTab
 
 class CreateNewSessionEvent
 class SwitchIndexedSessionEvent(val index: Int)

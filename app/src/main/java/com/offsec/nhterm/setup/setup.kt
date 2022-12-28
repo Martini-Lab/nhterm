@@ -5,9 +5,9 @@ import android.content.Context
 import android.os.Build
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import io.nhterm.App
-import io.nhterm.R
-import io.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.App
+import com.offsec.nhterm.R
+import com.offsec.nhterm.component.config.NeoTermPath
 import java.io.File
 import java.util.*
 
@@ -28,7 +28,7 @@ object SetupHelper {
   }
 
   fun setup(
-      activity: AppCompatActivity, connection: _root_ide_package_.com.offsec.nhterm.setup.SourceConnection,
+      activity: AppCompatActivity, connection: SourceConnection,
       resultListener: ResultListener
   ) {
     if (!needSetup()) {
@@ -42,7 +42,7 @@ object SetupHelper {
     progress.max = 100
     progress.show()
 
-    _root_ide_package_.com.offsec.nhterm.setup.SetupThread(
+    SetupThread(
         activity,
         connection,
         prefixFile,

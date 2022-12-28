@@ -14,18 +14,18 @@ import androidx.appcompat.widget.Toolbar
 import de.mrapp.android.tabswitcher.Tab
 import de.mrapp.android.tabswitcher.TabSwitcher
 import de.mrapp.android.tabswitcher.TabSwitcherDecorator
-import io.nhterm.NeoGLView
-import io.nhterm.R
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.colorscheme.ColorSchemeComponent
-import io.nhterm.component.completion.OnAutoCompleteListener
-import io.nhterm.component.config.DefaultValues
-import io.nhterm.component.config.NeoPreference
-import io.nhterm.component.session.XSession
-import io.nhterm.frontend.session.terminal.*
+import com.offsec.nhterm.NeoGLView
+import com.offsec.nhterm.R
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.colorscheme.ColorSchemeComponent
+import com.offsec.nhterm.component.completion.OnAutoCompleteListener
+import com.offsec.nhterm.component.config.DefaultValues
+import com.offsec.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.component.session.XSession
+import com.offsec.nhterm.frontend.session.terminal.*
 import com.offsec.nhterm.frontend.session.view.TerminalView
-import io.nhterm.frontend.session.view.extrakey.ExtraKeysView
-import io.nhterm.utils.Terminals
+import com.offsec.nhterm.frontend.session.view.extrakey.ExtraKeysView
+import com.offsec.nhterm.utils.Terminals
 import org.greenrobot.eventbus.EventBus
 
 /**
@@ -54,7 +54,7 @@ class NeoTabDecorator(val context: NeoTermActivity) : TabSwitcherDecorator() {
     return when (viewType) {
       VIEW_TYPE_TERM -> {
         val view = inflater.inflate(R.layout.ui_term, parent, false)
-        val terminalView = view.findViewById<_root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView>(R.id.terminal_view)
+        val terminalView = view.findViewById<TerminalView>(R.id.terminal_view)
         val extraKeysView = view.findViewById<ExtraKeysView>(R.id.extra_keys)
         Terminals.setupTerminalView(terminalView)
         Terminals.setupExtraKeysView(extraKeysView)
@@ -92,7 +92,7 @@ class NeoTabDecorator(val context: NeoTermActivity) : TabSwitcherDecorator() {
       VIEW_TYPE_TERM -> {
         val termTab = tab as TermTab
         termTab.toolbar = toolbar
-        val terminalView = findViewById<_root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView>(R.id.terminal_view)
+        val terminalView = findViewById<TerminalView>(R.id.terminal_view)
         if (isQuickPreview) {
           bindTerminalView(termTab, terminalView, null)
         } else {
@@ -184,7 +184,7 @@ class NeoTabDecorator(val context: NeoTermActivity) : TabSwitcherDecorator() {
   }
 
   private fun bindTerminalView(
-      tab: TermTab, view: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView?,
+      tab: TermTab, view: TerminalView?,
       extraKeysView: ExtraKeysView?
   ) {
     val termView = view ?: return
@@ -207,7 +207,7 @@ class NeoTabDecorator(val context: NeoTermActivity) : TabSwitcherDecorator() {
     }
   }
 
-  private fun createAutoCompleteListener(view: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView): OnAutoCompleteListener? {
+  private fun createAutoCompleteListener(view: TerminalView): OnAutoCompleteListener? {
     return TermCompleteListener(view)
   }
 

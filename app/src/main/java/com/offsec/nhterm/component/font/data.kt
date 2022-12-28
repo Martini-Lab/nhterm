@@ -2,7 +2,7 @@ package com.offsec.nhterm.component.font
 
 import android.graphics.Typeface
 import com.offsec.nhterm.frontend.session.view.TerminalView
-import io.nhterm.frontend.session.view.extrakey.ExtraKeysView
+import com.offsec.nhterm.frontend.session.view.extrakey.ExtraKeysView
 import java.io.File
 
 class NeoFont {
@@ -17,7 +17,7 @@ class NeoFont {
     this.typeface = typeface
   }
 
-  internal fun applyFont(terminalView: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView?, extraKeysView: ExtraKeysView?) {
+  internal fun applyFont(terminalView: TerminalView?, extraKeysView: ExtraKeysView?) {
     val typeface = getTypeFace()
     terminalView?.setTypeface(typeface)
     extraKeysView?.setTypeface(typeface)

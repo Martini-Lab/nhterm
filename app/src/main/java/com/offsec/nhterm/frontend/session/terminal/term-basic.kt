@@ -5,38 +5,38 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import com.offsec.nhterm.backend.TerminalSession
-import io.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.component.config.NeoPreference
 import com.offsec.nhterm.frontend.session.view.TerminalView
 import com.offsec.nhterm.frontend.session.view.TerminalViewClient
 
-open class BasicSessionCallback(var terminalView: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView) : _root_ide_package_.com.offsec.nhterm.backend.TerminalSession.SessionChangedCallback {
-  override fun onTextChanged(changedSession: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+open class BasicSessionCallback(var terminalView: TerminalView) : TerminalSession.SessionChangedCallback {
+  override fun onTextChanged(changedSession: TerminalSession?) {
     if (changedSession != null) {
       terminalView.onScreenUpdated()
     }
   }
 
-  override fun onTitleChanged(changedSession: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  override fun onTitleChanged(changedSession: TerminalSession?) {
   }
 
-  override fun onSessionFinished(finishedSession: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  override fun onSessionFinished(finishedSession: TerminalSession?) {
   }
 
-  override fun onClipboardText(session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?, text: String?) {
+  override fun onClipboardText(session: TerminalSession?, text: String?) {
   }
 
-  override fun onBell(session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  override fun onBell(session: TerminalSession?) {
   }
 
-  override fun onColorsChanged(session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  override fun onColorsChanged(session: TerminalSession?) {
     if (session != null) {
       terminalView.onScreenUpdated()
     }
   }
 }
 
-class BasicViewClient(val terminalView: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView) :
-    _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalViewClient {
+class BasicViewClient(val terminalView: TerminalView) :
+    com.offsec.nhterm.frontend.session.view.TerminalViewClient {
   override fun onScale(scale: Float): Float {
     if (scale < 0.9f || scale > 1.1f) {
       val increase = scale > 1f
@@ -62,7 +62,7 @@ class BasicViewClient(val terminalView: _root_ide_package_.com.offsec.nhterm.fro
   override fun copyModeChanged(copyMode: Boolean) {
   }
 
-  override fun onKeyDown(keyCode: Int, e: KeyEvent?, session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?): Boolean {
+  override fun onKeyDown(keyCode: Int, e: KeyEvent?, session: TerminalSession?): Boolean {
     return false
   }
 
@@ -78,7 +78,7 @@ class BasicViewClient(val terminalView: _root_ide_package_.com.offsec.nhterm.fro
     return false
   }
 
-  override fun onCodePoint(codePoint: Int, ctrlDown: Boolean, session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?): Boolean {
+  override fun onCodePoint(codePoint: Int, ctrlDown: Boolean, session: TerminalSession?): Boolean {
     return false
   }
 

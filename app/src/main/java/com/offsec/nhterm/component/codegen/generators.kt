@@ -1,8 +1,8 @@
 package com.offsec.nhterm.component.codegen
 
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.colorscheme.NeoColorScheme
-import io.nhterm.component.config.ConfigureComponent
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.colorscheme.NeoColorScheme
+import com.offsec.nhterm.component.config.ConfigureComponent
 
 class NeoColorGenerator(parameter: CodeGenParameter) : CodeGenerator(parameter) {
   override fun getGeneratorName(): String {

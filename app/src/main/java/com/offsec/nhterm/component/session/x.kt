@@ -15,9 +15,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
-import io.nhterm.*
-import io.nhterm.xorg.NeoXorgViewClient
-import io.nhterm.xorg.R
+import com.offsec.nhterm.*
+import com.offsec.nhterm.xorg.NeoXorgViewClient
+import com.offsec.nhterm.xorg.R
 import java.util.*
 
 class XParameter

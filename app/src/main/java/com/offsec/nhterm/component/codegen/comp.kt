@@ -1,6 +1,6 @@
 package com.offsec.nhterm.component.codegen
 
-import io.nhterm.component.NeoComponent
+import com.offsec.nhterm.component.NeoComponent
 
 
 class CodeGenComponent : NeoComponent {

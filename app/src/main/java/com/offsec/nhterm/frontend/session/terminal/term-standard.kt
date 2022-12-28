@@ -12,16 +12,16 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import io.nhterm.BuildConfig
-import io.nhterm.R
+import com.offsec.nhterm.BuildConfig
+import com.offsec.nhterm.R
 import com.offsec.nhterm.backend.KeyHandler
 import com.offsec.nhterm.backend.TerminalSession
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.completion.*
-import io.nhterm.component.config.NeoPreference
-import io.nhterm.component.extrakey.ExtraKeyComponent
-import io.nhterm.component.session.ShellTermSession
-import io.nhterm.frontend.completion.CandidatePopupWindow
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.completion.*
+import com.offsec.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.component.extrakey.ExtraKeyComponent
+import com.offsec.nhterm.component.session.ShellTermSession
+import com.offsec.nhterm.frontend.completion.CandidatePopupWindow
 import com.offsec.nhterm.frontend.session.view.TerminalView
 import com.offsec.nhterm.frontend.session.view.TerminalViewClient
 import java.util.*
@@ -30,7 +30,7 @@ import java.util.*
  * @author kiva
  */
 class TermViewClient(val context: Context) :
-    _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalViewClient {
+    TerminalViewClient {
   private var mVirtualControlKeyDown: Boolean = false
   private var mVirtualFnKeyDown: Boolean = false
   private var lastTitle: String = ""
@@ -61,7 +61,7 @@ class TermViewClient(val context: Context) :
     // TODO
   }
 
-  override fun onKeyDown(keyCode: Int, e: KeyEvent?, session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?): Boolean {
+  override fun onKeyDown(keyCode: Int, e: KeyEvent?, session: TerminalSession?): Boolean {
     if (handleVirtualKeys(keyCode, e, true)) {
       return true
     }
@@ -132,7 +132,7 @@ class TermViewClient(val context: Context) :
     return (extraKeysView != null && extraKeysView.readAltButton()) || mVirtualFnKeyDown
   }
 
-  override fun onCodePoint(codePoint: Int, ctrlDown: Boolean, session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?): Boolean {
+  override fun onCodePoint(codePoint: Int, ctrlDown: Boolean, session: TerminalSession?): Boolean {
     if (mVirtualFnKeyDown) {
       var resultingKeyCode: Int = -1
       var resultingCodePoint: Int = -1
@@ -190,7 +190,7 @@ class TermViewClient(val context: Context) :
         if (session != null) {
           val term = session.emulator
           session.write(
-            _root_ide_package_.com.offsec.nhterm.backend.KeyHandler.getCode(
+            KeyHandler.getCode(
               resultingKeyCode,
               0,
               term.isCursorKeysApplicationMode,
@@ -283,34 +283,35 @@ class TermViewClient(val context: Context) :
 /**
  * @author kiva
  */
-class TermSessionCallback : _root_ide_package_.com.offsec.nhterm.backend.TerminalSession.SessionChangedCallback {
+class TermSessionCallback : TerminalSession.SessionChangedCallback {
   var termSessionData: TermSessionData? = null
 
   var bellController: BellController? = null
 
-  override fun onTextChanged(changedSession: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  override fun onTextChanged(changedSession: TerminalSession?) {
     termSessionData?.termView?.onScreenUpdated()
   }
 
-  override fun onTitleChanged(changedSession: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  override fun onTitleChanged(changedSession: TerminalSession?) {
     if (changedSession?.title != null) {
       termSessionData?.termUI?.requireUpdateTitle(changedSession.title)
     }
   }
 
-  override fun onSessionFinished(finishedSession: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  override fun onSessionFinished(finishedSession: TerminalSession?) {
     termSessionData?.termUI?.requireOnSessionFinished()
   }
 
-  override fun onClipboardText(session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?, text: String?) {
+  override fun onClipboardText(session: TerminalSession?, text: String?) {
     val termView = termSessionData?.termView
     if (termView != null) {
-      val clipboard = termView.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-      clipboard.primaryClip = ClipData.newPlainText("", text)
+      val clipboardManager = termView.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+      val clipData = ClipData.newPlainText("", text)
+      clipboardManager.setPrimaryClip(clipData)
     }
   }
 
-  override fun onBell(session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  override fun onBell(session: TerminalSession?) {
     val termView = termSessionData?.termView ?: return
     val shellSession = session as ShellTermSession
 
@@ -321,7 +322,7 @@ class TermSessionCallback : _root_ide_package_.com.offsec.nhterm.backend.Termina
     bellController?.bellOrVibrate(termView.context, shellSession)
   }
 
-  override fun onColorsChanged(session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  override fun onColorsChanged(session: TerminalSession?) {
     val termView = termSessionData?.termView
     if (session != null && termView != null) {
       termView.onScreenUpdated()
@@ -360,7 +361,7 @@ class BellController {
   }
 }
 
-class TermCompleteListener(var terminalView: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView?) : OnAutoCompleteListener, OnCandidateSelectedListener {
+class TermCompleteListener(var terminalView: TerminalView?) : OnAutoCompleteListener, OnCandidateSelectedListener {
   private val inputStack = Stack<Char>()
   private var popupWindow: CandidatePopupWindow? = null
   private var lastCompletedIndex = 0

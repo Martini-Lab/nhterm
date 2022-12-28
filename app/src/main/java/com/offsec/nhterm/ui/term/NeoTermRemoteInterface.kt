@@ -10,19 +10,19 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import io.nhterm.App
-import io.nhterm.R
-import io.nhterm.bridge.Bridge.*
-import io.nhterm.bridge.SessionId
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.config.NeoPreference
-import io.nhterm.component.session.ShellParameter
-import io.nhterm.component.userscript.UserScript
-import io.nhterm.component.userscript.UserScriptComponent
-import io.nhterm.frontend.session.terminal.TermSessionCallback
-import io.nhterm.services.NeoTermService
-import io.nhterm.utils.Terminals
-import io.nhterm.utils.getPathOfMediaUri
+import com.offsec.nhterm.App
+import com.offsec.nhterm.R
+import com.offsec.nhterm.bridge.Bridge.*
+import com.offsec.nhterm.bridge.SessionId
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.component.session.ShellParameter
+import com.offsec.nhterm.component.userscript.UserScript
+import com.offsec.nhterm.component.userscript.UserScriptComponent
+import com.offsec.nhterm.frontend.session.terminal.TermSessionCallback
+import com.offsec.nhterm.services.NeoTermService
+import com.offsec.nhterm.utils.Terminals
+import com.offsec.nhterm.utils.getPathOfMediaUri
 import java.io.File
 
 /**
@@ -208,9 +208,15 @@ class NeoTermRemoteInterface : AppCompatActivity(), ServiceConnection {
       // In order to switch to it when entering NeoTermActivity
       NeoPreference.storeCurrentSession(session)
 
+      ////
+      // All needed for clean start
+      // ( also takes care of ghost sessions that happened before... )
       val intent = Intent(this, NeoTermActivity::class.java)
-      intent.addCategory(Intent.CATEGORY_DEFAULT)
       intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+      intent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME)
+      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+      intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
       startActivity(intent)
     }
   }

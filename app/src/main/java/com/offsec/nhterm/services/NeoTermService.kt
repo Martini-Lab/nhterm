@@ -11,15 +11,15 @@ import android.os.IBinder
 import android.os.PowerManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
-import io.nhterm.R
+import com.offsec.nhterm.R
 import com.offsec.nhterm.backend.EmulatorDebug
 import com.offsec.nhterm.backend.TerminalSession
-import io.nhterm.component.session.ShellParameter
-import io.nhterm.component.session.XParameter
-import io.nhterm.component.session.XSession
-import io.nhterm.ui.term.NeoTermActivity
-import io.nhterm.utils.NLog
-import io.nhterm.utils.Terminals
+import com.offsec.nhterm.component.session.ShellParameter
+import com.offsec.nhterm.component.session.XParameter
+import com.offsec.nhterm.component.session.XSession
+import com.offsec.nhterm.ui.term.NeoTermActivity
+import com.offsec.nhterm.utils.NLog
+import com.offsec.nhterm.utils.Terminals
 
 
 /**
@@ -32,7 +32,7 @@ class NeoTermService : Service() {
   }
 
   private val serviceBinder = NeoTermBinder()
-  private val mTerminalSessions = ArrayList<_root_ide_package_.com.offsec.nhterm.backend.TerminalSession>()
+  private val mTerminalSessions = ArrayList<TerminalSession>()
   private val mXSessions = ArrayList<XSession>()
   private var mWakeLock: PowerManager.WakeLock? = null
   private var mWifiLock: WifiManager.WifiLock? = null
@@ -72,19 +72,19 @@ class NeoTermService : Service() {
     mTerminalSessions.clear()
   }
 
-  val sessions: List<_root_ide_package_.com.offsec.nhterm.backend.TerminalSession>
+  val sessions: List<TerminalSession>
     get() = mTerminalSessions
 
   val xSessions: List<XSession>
     get() = mXSessions
 
-  fun createTermSession(parameter: ShellParameter): _root_ide_package_.com.offsec.nhterm.backend.TerminalSession {
+  fun createTermSession(parameter: ShellParameter): TerminalSession {
     val session = createOrFindSession(parameter)
     updateNotification()
     return session
   }
 
-  fun removeTermSession(sessionToRemove: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession): Int {
+  fun removeTermSession(sessionToRemove: TerminalSession): Int {
     val indexOfRemoved = mTerminalSessions.indexOf(sessionToRemove)
     if (indexOfRemoved >= 0) {
       mTerminalSessions.removeAt(indexOfRemoved)
@@ -109,7 +109,7 @@ class NeoTermService : Service() {
     return indexOfRemoved
   }
 
-  private fun createOrFindSession(parameter: ShellParameter): _root_ide_package_.com.offsec.nhterm.backend.TerminalSession {
+  private fun createOrFindSession(parameter: ShellParameter): TerminalSession {
     if (parameter.willCreateNewSession()) {
       NLog.d("createOrFindSession: creating new session")
       val session = Terminals.createSession(this, parameter)
@@ -191,12 +191,12 @@ class NeoTermService : Service() {
       val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
       mWakeLock = pm.newWakeLock(
         PowerManager.PARTIAL_WAKE_LOCK,
-        _root_ide_package_.com.offsec.nhterm.backend.EmulatorDebug.LOG_TAG + ":"
+        EmulatorDebug.LOG_TAG + ":"
       )
       mWakeLock!!.acquire()
 
       val wm = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-      mWifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, _root_ide_package_.com.offsec.nhterm.backend.EmulatorDebug.LOG_TAG)
+      mWifiLock = wm.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, EmulatorDebug.LOG_TAG)
       mWifiLock!!.acquire()
 
       updateNotification()

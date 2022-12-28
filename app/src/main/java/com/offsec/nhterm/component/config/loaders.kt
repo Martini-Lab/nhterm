@@ -2,10 +2,10 @@ package com.offsec.nhterm.component.config
 
 import io.neolang.frontend.ConfigVisitor
 import io.neolang.runtime.NeoLangValue
-import io.nhterm.component.colorscheme.NeoColorScheme
-import io.nhterm.component.extrakey.NeoExtraKey
-import io.nhterm.frontend.session.view.extrakey.TextButton
-import io.nhterm.utils.NLog
+import com.offsec.nhterm.component.colorscheme.NeoColorScheme
+import com.offsec.nhterm.component.extrakey.NeoExtraKey
+import com.offsec.nhterm.frontend.session.view.extrakey.TextButton
+import com.offsec.nhterm.utils.NLog
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileInputStream

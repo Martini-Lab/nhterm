@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
-import io.nhterm.R
-import io.nhterm.component.pm.NeoPackageInfo
-import io.nhterm.utils.formatSizeInKB
+import com.offsec.nhterm.R
+import com.offsec.nhterm.component.pm.NeoPackageInfo
+import com.offsec.nhterm.utils.formatSizeInKB
 
 class PackageAdapter(
   context: Context,

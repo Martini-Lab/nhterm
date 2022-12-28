@@ -9,11 +9,11 @@ import android.util.TypedValue
 import io.neolang.frontend.ConfigVisitor
 import io.neolang.frontend.NeoLangParser
 import com.offsec.nhterm.App
-import io.nhterm.R
+import com.offsec.nhterm.R
 import com.offsec.nhterm.backend.TerminalSession
-import io.nhterm.component.NeoComponent
-import io.nhterm.services.NeoTermService
-import io.nhterm.utils.NLog
+import com.offsec.nhterm.component.NeoComponent
+import com.offsec.nhterm.services.NeoTermService
+import com.offsec.nhterm.utils.NLog
 import java.io.File
 import java.nio.file.Files
 
@@ -99,7 +99,7 @@ object NeoPreference {
   }
 
   fun store(key: Int, value: Any) {
-    store(_root_ide_package_.com.offsec.nhterm.App.get().getString(key), value)
+    store(App.get().getString(key), value)
   }
 
   fun store(key: String, value: Any) {
@@ -111,15 +111,15 @@ object NeoPreference {
   }
 
   fun loadInt(key: Int, defaultValue: Int): Int {
-    return loadInt(_root_ide_package_.com.offsec.nhterm.App.get().getString(key), defaultValue)
+    return loadInt(App.get().getString(key), defaultValue)
   }
 
   fun loadString(key: Int, defaultValue: String?): String {
-    return loadString(_root_ide_package_.com.offsec.nhterm.App.get().getString(key), defaultValue)
+    return loadString(App.get().getString(key), defaultValue)
   }
 
   fun loadBoolean(key: Int, defaultValue: Boolean): Boolean {
-    return loadBoolean(_root_ide_package_.com.offsec.nhterm.App.get().getString(key), defaultValue)
+    return loadBoolean(App.get().getString(key), defaultValue)
   }
 
   fun loadInt(key: String?, defaultValue: Int): Int {
@@ -127,20 +127,20 @@ object NeoPreference {
   }
 
   fun loadString(key: String?, defaultValue: String?): String {
-    return preference!!.getString(key, defaultValue)
+    return preference!!.getString(key, defaultValue).orEmpty()
   }
 
   fun loadBoolean(key: String?, defaultValue: Boolean): Boolean {
     return preference!!.getBoolean(key, defaultValue)
   }
 
-  fun storeCurrentSession(session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession) {
+  fun storeCurrentSession(session: TerminalSession) {
     preference!!.edit()
       .putString(KEY_CURRENT_SESSION, session.mHandle)
       .apply()
   }
 
-  fun getCurrentSession(termService: NeoTermService?): _root_ide_package_.com.offsec.nhterm.backend.TerminalSession? {
+  fun getCurrentSession(termService: NeoTermService?): TerminalSession? {
     val sessionHandle = PreferenceManager.getDefaultSharedPreferences(termService!!)
       .getString(KEY_CURRENT_SESSION, "")
 

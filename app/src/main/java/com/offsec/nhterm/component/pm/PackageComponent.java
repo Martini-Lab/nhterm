@@ -2,7 +2,7 @@ package com.offsec.nhterm.component.pm;
 
 import com.offsec.nhterm.component.NeoComponent;
 
-import io.nhterm.component.NeoComponent;
+import com.offsec.nhterm.component.NeoComponent;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -1,18 +1,18 @@
 package com.offsec.nhterm.component
 
 import android.content.Context
-import io.nhterm.component.codegen.CodeGenComponent
-import io.nhterm.component.colorscheme.ColorSchemeComponent
-import io.nhterm.component.completion.CompletionComponent
-import io.nhterm.component.config.ConfigureComponent
-import io.nhterm.component.extrakey.ExtraKeyComponent
-import io.nhterm.component.font.FontComponent
+import com.offsec.nhterm.component.codegen.CodeGenComponent
+import com.offsec.nhterm.component.colorscheme.ColorSchemeComponent
+import com.offsec.nhterm.component.completion.CompletionComponent
+import com.offsec.nhterm.component.config.ConfigureComponent
+import com.offsec.nhterm.component.extrakey.ExtraKeyComponent
+import com.offsec.nhterm.component.font.FontComponent
 import com.offsec.nhterm.component.pm.PackageComponent
-import io.nhterm.component.profile.ProfileComponent
-import io.nhterm.component.session.SessionComponent
-import io.nhterm.component.session.ShellProfile
-import io.nhterm.component.userscript.UserScriptComponent
-import io.nhterm.utils.NLog
+import com.offsec.nhterm.component.profile.ProfileComponent
+import com.offsec.nhterm.component.session.SessionComponent
+import com.offsec.nhterm.component.session.ShellProfile
+import com.offsec.nhterm.component.userscript.UserScriptComponent
+import com.offsec.nhterm.utils.NLog
 import java.util.concurrent.ConcurrentHashMap
 
 interface NeoComponent {
@@ -80,7 +80,7 @@ object NeoInitializer {
     ComponentManager.registerComponent(UserScriptComponent::class.java)
     ComponentManager.registerComponent(ExtraKeyComponent::class.java)
     ComponentManager.registerComponent(CompletionComponent::class.java)
-    ComponentManager.registerComponent(_root_ide_package_.com.offsec.nhterm.component.pm.PackageComponent::class.java)
+    ComponentManager.registerComponent(PackageComponent::class.java)
     ComponentManager.registerComponent(SessionComponent::class.java)
     ComponentManager.registerComponent(ProfileComponent::class.java)
 

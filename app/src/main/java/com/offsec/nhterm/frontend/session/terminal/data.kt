@@ -1,20 +1,20 @@
 package com.offsec.nhterm.frontend.session.terminal
 
 import com.offsec.nhterm.backend.TerminalSession
-import io.nhterm.component.completion.OnAutoCompleteListener
-import io.nhterm.component.session.ShellProfile
-import io.nhterm.component.session.ShellTermSession
+import com.offsec.nhterm.component.completion.OnAutoCompleteListener
+import com.offsec.nhterm.component.session.ShellProfile
+import com.offsec.nhterm.component.session.ShellTermSession
 import com.offsec.nhterm.frontend.session.view.TerminalView
-import io.nhterm.frontend.session.view.extrakey.ExtraKeysView
+import com.offsec.nhterm.frontend.session.view.extrakey.ExtraKeysView
 
 class TermSessionData {
-  var termSession: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession? = null
+  var termSession: TerminalSession? = null
   var sessionCallback: TermSessionCallback? = null
   var viewClient: TermViewClient? = null
   var onAutoCompleteListener: OnAutoCompleteListener? = null
 
   var termUI: TermUiPresenter? = null
-  var termView: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView? = null
+  var termView: TerminalView? = null
   var extraKeysView: ExtraKeysView? = null
 
   var profile: ShellProfile? = null
@@ -35,7 +35,7 @@ class TermSessionData {
   }
 
   fun initializeSessionWith(
-      session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession,
+      session: TerminalSession,
       sessionCallback: TermSessionCallback?,
       viewClient: TermViewClient?
   ) {
@@ -50,7 +50,7 @@ class TermSessionData {
     }
   }
 
-  fun initializeViewWith(termUI: TermUiPresenter?, termView: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView?, eks: ExtraKeysView?) {
+  fun initializeViewWith(termUI: TermUiPresenter?, termView: TerminalView?, eks: ExtraKeysView?) {
     this.termUI = termUI
     this.termView = termView
     this.extraKeysView = eks

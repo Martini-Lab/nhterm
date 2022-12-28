@@ -1,8 +1,8 @@
 package com.offsec.nhterm.component
 
 import io.neolang.frontend.ConfigVisitor
-import io.nhterm.component.config.ConfigureComponent
-import io.nhterm.utils.NLog
+import com.offsec.nhterm.component.config.ConfigureComponent
+import com.offsec.nhterm.utils.NLog
 import java.io.File
 import java.io.FileFilter
 

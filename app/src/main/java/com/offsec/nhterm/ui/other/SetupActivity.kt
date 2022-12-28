@@ -9,13 +9,13 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import io.nhterm.App
-import io.nhterm.R
-import io.nhterm.component.config.NeoTermPath
-import io.nhterm.component.pm.SourceHelper
-import io.nhterm.setup.*
-import io.nhterm.utils.getPathOfMediaUri
-import io.nhterm.utils.runApt
+import com.offsec.nhterm.App
+import com.offsec.nhterm.R
+import com.offsec.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.component.pm.SourceHelper
+import com.offsec.nhterm.setup.*
+import com.offsec.nhterm.utils.getPathOfMediaUri
+import com.offsec.nhterm.utils.runApt
 import java.io.File
 
 
@@ -156,7 +156,7 @@ class SetupActivity : AppCompatActivity(), View.OnClickListener, ResultListener 
     }
   }
 
-  private fun createSourceConnection(id: Int, parameter: String, parameterUri: Uri?): _root_ide_package_.com.offsec.nhterm.setup.SourceConnection {
+  private fun createSourceConnection(id: Int, parameter: String, parameterUri: Uri?): SourceConnection {
     return when (id) {
       R.id.setup_method_local -> LocalFileConnection(this, parameterUri!!)
       R.id.setup_method_online -> NetworkConnection(parameter)
@@ -187,7 +187,7 @@ class SetupActivity : AppCompatActivity(), View.OnClickListener, ResultListener 
     parameterEditor.setText(setupParameter)
   }
 
-  private fun showConfirmDialog(connection: _root_ide_package_.com.offsec.nhterm.setup.SourceConnection) {
+  private fun showConfirmDialog(connection: SourceConnection) {
     val needSetup = SetupHelper.needSetup()
     val titleId = if (needSetup) R.string.setup_confirm else R.string.setup_reset_confirm
     val messageId = if (needSetup) R.string.setup_confirm_text else R.string.setup_reset_confirm_text
@@ -202,7 +202,7 @@ class SetupActivity : AppCompatActivity(), View.OnClickListener, ResultListener 
       .show()
   }
 
-  private fun doSetup(connection: _root_ide_package_.com.offsec.nhterm.setup.SourceConnection) {
+  private fun doSetup(connection: SourceConnection) {
     SetupHelper.setup(this, connection, this)
   }
 

@@ -8,10 +8,10 @@ import android.net.Uri
 import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import io.nhterm.component.NeoInitializer
-import io.nhterm.component.config.NeoPreference
-import io.nhterm.ui.other.BonusActivity
-import io.nhterm.utils.CrashHandler
+import com.offsec.nhterm.component.NeoInitializer
+import com.offsec.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.ui.other.BonusActivity
+import com.offsec.nhterm.utils.CrashHandler
 
 /**
  * @author kiva
@@ -19,7 +19,8 @@ import io.nhterm.utils.CrashHandler
 class App : Application() {
   override fun onCreate() {
     super.onCreate()
-    _root_ide_package_.com.offsec.nhterm.App.Companion.app = this
+    app = this
+
     NeoPreference.init(this)
     CrashHandler.init()
     NeoInitializer.init(this)
@@ -31,10 +32,10 @@ class App : Application() {
 
   fun errorDialog(context: Context, message: String, dismissCallback: (() -> Unit)?) {
     AlertDialog.Builder(context)
-      .setTitle(_root_ide_package_.io.nhterm.R.string.error)
+      .setTitle(R.string.error)
       .setMessage(message)
       .setNegativeButton(android.R.string.no, null)
-      .setPositiveButton(_root_ide_package_.io.nhterm.R.string.show_help) { _, _ ->
+      .setPositiveButton(R.string.show_help) { _, _ ->
         openHelpLink()
       }
       .setOnDismissListener {
@@ -67,10 +68,10 @@ class App : Application() {
   }
 
   companion object {
-    private var app: _root_ide_package_.com.offsec.nhterm.App? = null
+    private var app: App? = null
 
-    fun get(): _root_ide_package_.com.offsec.nhterm.App {
-      return _root_ide_package_.com.offsec.nhterm.App.Companion.app!!
+    fun get(): App {
+      return app!!
     }
   }
 }

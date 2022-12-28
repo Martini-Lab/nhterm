@@ -3,11 +3,11 @@ package com.offsec.nhterm.component.extrakey
 import android.content.Context
 import io.neolang.frontend.ConfigVisitor
 import com.offsec.nhterm.App
-import io.nhterm.component.ConfigFileBasedComponent
-import io.nhterm.component.config.NeoTermPath
-import io.nhterm.frontend.session.view.extrakey.ExtraKeysView
-import io.nhterm.utils.NLog
-import io.nhterm.utils.extractAssetsDir
+import com.offsec.nhterm.component.ConfigFileBasedComponent
+import com.offsec.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.frontend.session.view.extrakey.ExtraKeysView
+import com.offsec.nhterm.utils.NLog
+import com.offsec.nhterm.utils.extractAssetsDir
 import java.io.File
 
 class ExtraKeyComponent : ConfigFileBasedComponent<NeoExtraKey>(NeoTermPath.EKS_PATH) {
@@ -19,7 +19,7 @@ class ExtraKeyComponent : ConfigFileBasedComponent<NeoExtraKey>(NeoTermPath.EKS_
   override fun onCheckComponentFiles() {
     val defaultFile = File(NeoTermPath.EKS_DEFAULT_FILE)
     if (!defaultFile.exists()) {
-      extractDefaultConfig(_root_ide_package_.com.offsec.nhterm.App.get())
+      extractDefaultConfig(App.get())
     }
     reloadExtraKeyConfig()
   }

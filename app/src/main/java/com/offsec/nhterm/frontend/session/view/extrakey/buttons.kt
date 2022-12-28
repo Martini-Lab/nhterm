@@ -10,7 +10,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ToggleButton
 import androidx.appcompat.widget.AppCompatButton
-import io.nhterm.R
+import com.offsec.nhterm.R
 import com.offsec.nhterm.frontend.session.view.TerminalView
 
 /**
@@ -86,7 +86,7 @@ abstract class IExtraButton : View.OnClickListener {
         view.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, keyCode))
         view.dispatchKeyEvent(KeyEvent(KeyEvent.ACTION_UP, keyCode))
       } else if (chars.isNotEmpty()) {
-        val terminalView = view.findViewById<_root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView>(R.id.terminal_view)
+        val terminalView = view.findViewById<TerminalView>(R.id.terminal_view)
         val session = terminalView.currentSession
         session?.write(chars)
       }

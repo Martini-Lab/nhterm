@@ -15,8 +15,8 @@ import de.psdev.licensesdialog.licenses.GnuGeneralPublicLicense30
 import de.psdev.licensesdialog.licenses.MITLicense
 import de.psdev.licensesdialog.model.Notice
 import de.psdev.licensesdialog.model.Notices
-import io.nhterm.App
-import io.nhterm.R
+import com.offsec.nhterm.App
+import com.offsec.nhterm.R
 
 
 /**
@@ -153,11 +153,11 @@ class AboutActivity : AppCompatActivity() {
     startActivity(intent)
   }
 
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item?.itemId) {
       android.R.id.home ->
         finish()
     }
-    return super.onOptionsItemSelected(item)
+    return item?.let { super.onOptionsItemSelected(it) }
   }
 }

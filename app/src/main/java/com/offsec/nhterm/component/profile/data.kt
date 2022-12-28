@@ -1,15 +1,15 @@
 package com.offsec.nhterm.component.profile
 
 import io.neolang.frontend.ConfigVisitor
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.ConfigFileBasedObject
-import io.nhterm.component.codegen.CodeGenObject
-import io.nhterm.component.codegen.CodeGenParameter
-import io.nhterm.component.codegen.CodeGenerator
-import io.nhterm.component.codegen.NeoProfileGenerator
-import io.nhterm.component.config.ConfigureComponent
-import io.nhterm.component.config.NeoConfigureFile
-import io.nhterm.utils.NLog
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.ConfigFileBasedObject
+import com.offsec.nhterm.component.codegen.CodeGenObject
+import com.offsec.nhterm.component.codegen.CodeGenParameter
+import com.offsec.nhterm.component.codegen.CodeGenerator
+import com.offsec.nhterm.component.codegen.NeoProfileGenerator
+import com.offsec.nhterm.component.config.ConfigureComponent
+import com.offsec.nhterm.component.config.NeoConfigureFile
+import com.offsec.nhterm.utils.NLog
 import org.jetbrains.annotations.TestOnly
 import java.io.File
 

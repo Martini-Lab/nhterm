@@ -3,22 +3,22 @@ package com.offsec.nhterm.utils
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.offsec.nhterm.backend.TerminalSession
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.config.NeoPreference
-import io.nhterm.component.font.FontComponent
-import io.nhterm.component.session.SessionComponent
-import io.nhterm.component.session.ShellParameter
-import io.nhterm.component.session.XParameter
-import io.nhterm.component.session.XSession
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.component.font.FontComponent
+import com.offsec.nhterm.component.session.SessionComponent
+import com.offsec.nhterm.component.session.ShellParameter
+import com.offsec.nhterm.component.session.XParameter
+import com.offsec.nhterm.component.session.XSession
 import com.offsec.nhterm.frontend.session.view.TerminalView
 import com.offsec.nhterm.frontend.session.view.TerminalViewClient
-import io.nhterm.frontend.session.view.extrakey.ExtraKeysView
+import com.offsec.nhterm.frontend.session.view.extrakey.ExtraKeysView
 
 /**
  * @author kiva
  */
 object Terminals {
-  fun setupTerminalView(terminalView: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView?, terminalViewClient: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalViewClient? = null) {
+  fun setupTerminalView(terminalView: TerminalView?, terminalViewClient: com.offsec.nhterm.frontend.session.view.TerminalViewClient? = null) {
     terminalView?.textSize = NeoPreference.getFontSize();
 
     val fontComponent = ComponentManager.getComponent<FontComponent>()
@@ -35,7 +35,7 @@ object Terminals {
     fontComponent.applyFont(null, extraKeysView, font)
   }
 
-  fun createSession(context: Context, parameter: ShellParameter): _root_ide_package_.com.offsec.nhterm.backend.TerminalSession {
+  fun createSession(context: Context, parameter: ShellParameter): TerminalSession {
     val sessionComponent = ComponentManager.getComponent<SessionComponent>()
     return sessionComponent.createSession(context, parameter)
   }

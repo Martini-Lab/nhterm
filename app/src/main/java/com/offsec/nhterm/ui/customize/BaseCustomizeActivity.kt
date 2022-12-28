@@ -4,25 +4,25 @@ import android.annotation.SuppressLint
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import io.nhterm.R
+import com.offsec.nhterm.R
 import com.offsec.nhterm.backend.TerminalSession
-import io.nhterm.component.config.NeoTermPath
-import io.nhterm.component.session.ShellParameter
-import io.nhterm.frontend.session.terminal.BasicSessionCallback
-import io.nhterm.frontend.session.terminal.BasicViewClient
+import com.offsec.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.component.session.ShellParameter
+import com.offsec.nhterm.frontend.session.terminal.BasicSessionCallback
+import com.offsec.nhterm.frontend.session.terminal.BasicViewClient
 import com.offsec.nhterm.frontend.session.view.TerminalView
-import io.nhterm.frontend.session.view.extrakey.ExtraKeysView
-import io.nhterm.utils.Terminals
+import com.offsec.nhterm.frontend.session.view.extrakey.ExtraKeysView
+import com.offsec.nhterm.utils.Terminals
 
 /**
  * @author kiva
  */
 @SuppressLint("Registered")
 open class BaseCustomizeActivity : AppCompatActivity() {
-  lateinit var terminalView: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView
+  lateinit var terminalView: TerminalView
   lateinit var viewClient: BasicViewClient
   lateinit var sessionCallback: BasicSessionCallback
-  lateinit var session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession
+  lateinit var session: TerminalSession
   lateinit var extraKeysView: ExtraKeysView
 
   fun initCustomizationComponent(layoutId: Int) {
@@ -50,10 +50,10 @@ open class BaseCustomizeActivity : AppCompatActivity() {
     terminalView.attachSession(session)
   }
 
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item?.itemId) {
       android.R.id.home -> finish()
     }
-    return super.onOptionsItemSelected(item)
+    return item?.let { super.onOptionsItemSelected(it) }
   }
 }

@@ -15,12 +15,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuItemCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter
-import io.nhterm.R
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.config.NeoPreference
-import io.nhterm.component.pm.*
+import com.offsec.nhterm.R
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.component.pm.*
 import com.offsec.nhterm.utils.StringDistance
-import io.nhterm.utils.runApt
+import com.offsec.nhterm.utils.runApt
 import java.util.*
 
 /**
@@ -80,7 +80,7 @@ class PackageManagerActivity : AppCompatActivity(), SearchView.OnQueryTextListen
     return true
   }
 
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item?.itemId) {
       android.R.id.home -> finish()
       R.id.action_source -> changeSource()
@@ -88,11 +88,11 @@ class PackageManagerActivity : AppCompatActivity(), SearchView.OnQueryTextListen
       R.id.action_refresh -> refreshPackageList()
       R.id.action_upgrade -> executeAptUpgrade()
     }
-    return super.onOptionsItemSelected(item)
+    return item?.let { super.onOptionsItemSelected(it) }
   }
 
   private fun changeSource() {
-    val sourceManager = ComponentManager.getComponent<_root_ide_package_.com.offsec.nhterm.component.pm.PackageComponent>().sourceManager
+    val sourceManager = ComponentManager.getComponent<PackageComponent>().sourceManager
     val sourceList = sourceManager.getAllSources()
 
     val items = sourceList.map { "${it.url} :: ${it.repo}" }.toTypedArray()
@@ -144,7 +144,7 @@ class PackageManagerActivity : AppCompatActivity(), SearchView.OnQueryTextListen
       .show()
   }
 
-  private fun changeSourceInternal(sourceManager: SourceManager, source: List<_root_ide_package_.com.offsec.nhterm.component.pm.Source>) {
+  private fun changeSourceInternal(sourceManager: SourceManager, source: List<Source>) {
     sourceManager.updateAll(source)
     postChangeSource(sourceManager)
   }
@@ -169,7 +169,7 @@ class PackageManagerActivity : AppCompatActivity(), SearchView.OnQueryTextListen
   }
 
   private fun refreshPackageList() = Thread {
-    val pm = ComponentManager.getComponent<_root_ide_package_.com.offsec.nhterm.component.pm.PackageComponent>()
+    val pm = ComponentManager.getComponent<PackageComponent>()
     val sourceFiles = SourceHelper.detectSourceFiles()
 
     pm.clearPackages()
@@ -190,7 +190,7 @@ class PackageManagerActivity : AppCompatActivity(), SearchView.OnQueryTextListen
   ): List<Pair<PackageModel, Int>> {
     return models
       .map {
-        it to _root_ide_package_.com.offsec.nhterm.utils.StringDistance.distance(mapper(it.packageInfo).toLowerCase(Locale.ROOT), query.toLowerCase(Locale.ROOT))
+        it to StringDistance.distance(mapper(it.packageInfo).toLowerCase(Locale.ROOT), query.toLowerCase(Locale.ROOT))
       }
       .sortedWith { l, r -> r.second.compareTo(l.second) }
       .toList()

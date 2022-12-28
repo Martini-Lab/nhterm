@@ -1,8 +1,8 @@
 package com.offsec.nhterm.utils
 
 import android.content.Intent
-import io.nhterm.App
-import io.nhterm.ui.other.CrashActivity
+import com.offsec.nhterm.App
+import com.offsec.nhterm.ui.other.CrashActivity
 
 /**
  * @author kiva

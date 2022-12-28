@@ -24,7 +24,7 @@ open class LocalFileConnection(context: Context, uri: Uri) : OfflineUriConnectio
  */
 
 class NetworkConnection(private val sourceUrl: String) :
-    _root_ide_package_.com.offsec.nhterm.setup.SourceConnection {
+    SourceConnection {
   private var connection: HttpURLConnection? = null
 
   @Throws(IOException::class)
@@ -62,11 +62,11 @@ class NetworkConnection(private val sourceUrl: String) :
  * @author kiva
  */
 
-abstract class OfflineConnection : _root_ide_package_.com.offsec.nhterm.setup.SourceConnection {
+abstract class OfflineConnection : SourceConnection {
   private var inputStream: InputStream? = null
 
   @Throws(IOException::class)
-  protected abstract fun openInputStream(): InputStream
+  protected abstract fun openInputStream(): InputStream?
 
   @Throws(IOException::class)
   override fun getInputStream(): InputStream {
@@ -108,7 +108,7 @@ abstract class OfflineConnection : _root_ide_package_.com.offsec.nhterm.setup.So
 open class OfflineUriConnection(private val context: Context, private val uri: Uri) : OfflineConnection() {
 
   @Throws(IOException::class)
-  override fun openInputStream(): InputStream {
+  override fun openInputStream(): InputStream? {
     return context.contentResolver.openInputStream(uri)
   }
 }

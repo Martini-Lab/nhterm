@@ -3,15 +3,15 @@ package com.offsec.nhterm.component.colorscheme
 import android.content.Context
 import io.neolang.frontend.ConfigVisitor
 import com.offsec.nhterm.App
-import io.nhterm.R
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.ConfigFileBasedComponent
-import io.nhterm.component.codegen.CodeGenComponent
-import io.nhterm.component.config.NeoPreference
-import io.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.R
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.ConfigFileBasedComponent
+import com.offsec.nhterm.component.codegen.CodeGenComponent
+import com.offsec.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.component.config.NeoTermPath
 import com.offsec.nhterm.frontend.session.view.TerminalView
-import io.nhterm.frontend.session.view.extrakey.ExtraKeysView
-import io.nhterm.utils.extractAssetsDir
+import com.offsec.nhterm.frontend.session.view.extrakey.ExtraKeysView
+import com.offsec.nhterm.utils.extractAssetsDir
 import java.io.File
 import java.nio.file.Files
 
@@ -31,7 +31,7 @@ class ColorSchemeComponent : ConfigFileBasedComponent<NeoColorScheme>(NeoTermPat
   override fun onCheckComponentFiles() {
     val defaultColorFile = colorFile(DefaultColorScheme.colorName)
     if (!defaultColorFile.exists()) {
-      if (!extractDefaultColor(_root_ide_package_.com.offsec.nhterm.App.get())) {
+      if (!extractDefaultColor(App.get())) {
         DEFAULT_COLOR = DefaultColorScheme
         colors[DEFAULT_COLOR.colorName] = DEFAULT_COLOR
         return
@@ -63,7 +63,7 @@ class ColorSchemeComponent : ConfigFileBasedComponent<NeoColorScheme>(NeoTermPat
     return false
   }
 
-  fun applyColorScheme(view: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView?, extraKeysView: ExtraKeysView?, colorScheme: NeoColorScheme?) {
+  fun applyColorScheme(view: TerminalView?, extraKeysView: ExtraKeysView?, colorScheme: NeoColorScheme?) {
     colorScheme?.applyColorScheme(view, extraKeysView)
   }
 

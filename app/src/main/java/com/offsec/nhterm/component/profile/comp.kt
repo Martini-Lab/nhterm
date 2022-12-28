@@ -1,9 +1,9 @@
 package com.offsec.nhterm.component.profile
 
 import io.neolang.frontend.ConfigVisitor
-import io.nhterm.component.ConfigFileBasedComponent
-import io.nhterm.component.config.NeoTermPath
-import io.nhterm.utils.NLog
+import com.offsec.nhterm.component.ConfigFileBasedComponent
+import com.offsec.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.utils.NLog
 import java.io.File
 
 class ProfileComponent : ConfigFileBasedComponent<NeoProfile>(NeoTermPath.PROFILE_PATH) {

@@ -3,21 +3,21 @@ package com.offsec.nhterm.component.font
 import android.content.Context
 import android.graphics.Typeface
 import com.offsec.nhterm.App
-import io.nhterm.R
-import io.nhterm.component.NeoComponent
-import io.nhterm.component.config.DefaultValues
-import io.nhterm.component.config.NeoPreference
-import io.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.R
+import com.offsec.nhterm.component.NeoComponent
+import com.offsec.nhterm.component.config.DefaultValues
+import com.offsec.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.component.config.NeoTermPath
 import com.offsec.nhterm.frontend.session.view.TerminalView
-import io.nhterm.frontend.session.view.extrakey.ExtraKeysView
-import io.nhterm.utils.extractAssetsDir
+import com.offsec.nhterm.frontend.session.view.extrakey.ExtraKeysView
+import com.offsec.nhterm.utils.extractAssetsDir
 import java.io.File
 
 class FontComponent : NeoComponent {
   private lateinit var DEFAULT_FONT: NeoFont
   private lateinit var fonts: MutableMap<String, NeoFont>
 
-  fun applyFont(terminalView: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView?, extraKeysView: ExtraKeysView?, font: NeoFont?) {
+  fun applyFont(terminalView: TerminalView?, extraKeysView: ExtraKeysView?, font: NeoFont?) {
     font?.applyFont(terminalView, extraKeysView)
   }
 
@@ -106,7 +106,7 @@ class FontComponent : NeoComponent {
     File(NeoTermPath.FONT_PATH).mkdirs()
     fonts = mutableMapOf()
 
-    val context = _root_ide_package_.com.offsec.nhterm.App.get()
+    val context = App.get()
     val defaultFont = DefaultValues.defaultFont
     val defaultFontFile = fontFile(defaultFont)
 

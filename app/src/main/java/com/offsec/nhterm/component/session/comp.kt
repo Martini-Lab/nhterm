@@ -3,10 +3,11 @@ package com.offsec.nhterm.component.session
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import io.nhterm.Globals
-import io.nhterm.component.NeoComponent
-import io.nhterm.component.config.NeoTermPath
-import io.nhterm.utils.NLog
+import com.offsec.nhterm.Globals
+
+import com.offsec.nhterm.component.NeoComponent
+import com.offsec.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.utils.NLog
 
 class SessionComponent : NeoComponent {
   companion object {

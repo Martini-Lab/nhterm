@@ -4,13 +4,16 @@ import android.Manifest
 import android.content.*
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.preference.PreferenceManager
+import android.system.Os
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -18,30 +21,33 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
-import de.mrapp.android.tabswitcher.*
-import io.nhterm.App
-import io.nhterm.BuildConfig
-import io.nhterm.R
+import com.offsec.nhterm.App
+import com.offsec.nhterm.BuildConfig
+import com.offsec.nhterm.R
 import com.offsec.nhterm.backend.TerminalSession
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.config.NeoPreference
-import io.nhterm.component.profile.ProfileComponent
-import io.nhterm.component.session.ShellParameter
-import io.nhterm.component.session.ShellProfile
-import io.nhterm.component.session.XParameter
-import io.nhterm.component.session.XSession
-import io.nhterm.frontend.session.terminal.*
-import io.nhterm.services.NeoTermService
-import io.nhterm.setup.SetupHelper
-import io.nhterm.ui.other.SetupActivity
-import io.nhterm.ui.pm.PackageManagerActivity
-import io.nhterm.ui.settings.SettingActivity
-import io.nhterm.utils.FullScreenHelper
-import io.nhterm.utils.NeoPermission
-import io.nhterm.utils.RangedInt
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.component.profile.ProfileComponent
+import com.offsec.nhterm.component.session.ShellParameter
+import com.offsec.nhterm.component.session.ShellProfile
+import com.offsec.nhterm.component.session.XParameter
+import com.offsec.nhterm.component.session.XSession
+import com.offsec.nhterm.frontend.session.terminal.*
+import com.offsec.nhterm.services.NeoTermService
+import com.offsec.nhterm.setup.SetupHelper
+import com.offsec.nhterm.ui.other.SetupActivity
+import com.offsec.nhterm.ui.pm.PackageManagerActivity
+import com.offsec.nhterm.ui.settings.SettingActivity
+import com.offsec.nhterm.utils.FullScreenHelper
+import com.offsec.nhterm.utils.NeoPermission
+import com.offsec.nhterm.utils.RangedInt
+import com.offsec.nhterm.utils.extractAssetsDir
+import de.mrapp.android.tabswitcher.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 
 class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -66,20 +72,20 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     if (fullscreen) {
       window.setFlags(
         WindowManager.LayoutParams.FLAG_FULLSCREEN,
-        WindowManager.LayoutParams.FLAG_FULLSCREEN
+        WindowManager.LayoutParams.FLAG_FULLSCREEN,
       )
     }
 
     val SDCARD_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1
     if (ContextCompat.checkSelfPermission(
         this,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
       ) != PackageManager.PERMISSION_GRANTED
     ) {
       ActivityCompat.requestPermissions(
         this,
         arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-        SDCARD_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
+        SDCARD_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE,
       )
     }
 
@@ -89,15 +95,17 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     setSupportActionBar(toolbar)
 
     fullScreenHelper = FullScreenHelper.injectActivity(this, fullscreen, peekRecreating())
-    fullScreenHelper.setKeyBoardListener(object : FullScreenHelper.KeyBoardListener {
-      override fun onKeyboardChange(isShow: Boolean, keyboardHeight: Int) {
-        if (tabSwitcher.selectedTab is TermTab) {
-          val tab = tabSwitcher.selectedTab as TermTab
-          // isShow -> toolbarHide
-          toggleToolbar(tab.toolbar, !isShow)
+    fullScreenHelper.setKeyBoardListener(
+      object : FullScreenHelper.KeyBoardListener {
+        override fun onKeyboardChange(isShow: Boolean, keyboardHeight: Int) {
+          if (tabSwitcher.selectedTab is TermTab) {
+            val tab = tabSwitcher.selectedTab as TermTab
+            // isShow -> toolbarHide
+            toggleToolbar(tab.toolbar, !isShow)
+          }
         }
-      }
-    })
+      },
+    )
 
     tabSwitcher = findViewById(R.id.tab_switcher)
     tabSwitcher.decorator = NeoTabDecorator(this)
@@ -138,48 +146,39 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
     menuInflater.inflate(R.menu.menu_main, menu)
 
-    TabSwitcher.setupWithMenu(tabSwitcher, toolbar.menu, {
-      if (!tabSwitcher.isSwitcherShown) {
-        val imm = this@NeoTermActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        if (imm.isActive && tabSwitcher.selectedTab is TermTab) {
-          val tab = tabSwitcher.selectedTab as TermTab
-          tab.requireHideIme()
+    TabSwitcher.setupWithMenu(
+      tabSwitcher, toolbar.menu,
+      {
+        if (!tabSwitcher.isSwitcherShown) {
+          val imm = this@NeoTermActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+          if (imm.isActive && tabSwitcher.selectedTab is TermTab) {
+            val tab = tabSwitcher.selectedTab as TermTab
+            tab.requireHideIme()
+          }
+          toggleSwitcher(showSwitcher = true, easterEgg = true)
+        } else {
+          toggleSwitcher(showSwitcher = false, easterEgg = true)
         }
-        toggleSwitcher(showSwitcher = true, easterEgg = true)
-      } else {
-        toggleSwitcher(showSwitcher = false, easterEgg = true)
-      }
-    })
+      },
+    )
     return true
   }
 
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
     return when (item?.itemId) {
       R.id.menu_item_settings -> {
         startActivity(Intent(this, SettingActivity::class.java))
         true
       }
-      R.id.menu_item_package_settings -> {
-        startActivity(Intent(this, PackageManagerActivity::class.java))
-        true
-      }
       R.id.menu_item_new_session -> {
-        addNewSession()
-        true
-      }
-      R.id.menu_item_new_session_with_profile -> {
-        showProfileDialog()
+        addNewNetHunterSession("KALI LINUX")
         true
       }
       R.id.menu_item_new_system_session -> {
-        forceAddSystemSession()
+        addNewAndroidSession("Android")
         true
       }
-      R.id.menu_item_new_x_session -> {
-        addXSession()
-        true
-      }
-      else -> super.onOptionsItemSelected(item)
+      else -> item?.let { super.onOptionsItemSelected(it) }
     }
   }
 
@@ -193,43 +192,45 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     super.onResume()
     PreferenceManager.getDefaultSharedPreferences(this)
       .registerOnSharedPreferenceChangeListener(this)
-    tabSwitcher.addListener(object : TabSwitcherListener {
-      override fun onSwitcherShown(tabSwitcher: TabSwitcher) {
-        toolbar.setNavigationIcon(R.drawable.ic_add_box_white_24dp)
-        toolbar.setNavigationOnClickListener(addSessionListener)
-        toolbar.setBackgroundResource(android.R.color.transparent)
-        toolbar.animate().alpha(0f).setDuration(300).withEndAction {
-          toolbar.alpha = 1f
-        }.start()
-      }
-
-      override fun onSwitcherHidden(tabSwitcher: TabSwitcher) {
-        toolbar.navigationIcon = null
-        toolbar.setNavigationOnClickListener(null)
-        toolbar.setBackgroundResource(R.color.colorPrimary)
-      }
-
-      override fun onSelectionChanged(tabSwitcher: TabSwitcher, selectedTabIndex: Int, selectedTab: Tab?) {
-        if (selectedTab is TermTab && selectedTab.termData.termSession != null) {
-          NeoPreference.storeCurrentSession(selectedTab.termData.termSession!!)
+    tabSwitcher.addListener(
+      object : TabSwitcherListener {
+        override fun onSwitcherShown(tabSwitcher: TabSwitcher) {
+          toolbar.setNavigationIcon(R.drawable.ic_add_box_white_24dp)
+          toolbar.setNavigationOnClickListener(addSessionListener)
+          toolbar.setBackgroundResource(android.R.color.transparent)
+          toolbar.animate().alpha(0f).setDuration(300).withEndAction {
+            toolbar.alpha = 1f
+          }.start()
         }
-      }
 
-      override fun onTabAdded(tabSwitcher: TabSwitcher, index: Int, tab: Tab, animation: Animation) {
-        update_colors()
-      }
-
-      override fun onTabRemoved(tabSwitcher: TabSwitcher, index: Int, tab: Tab, animation: Animation) {
-        if (tab is TermTab) {
-          SessionRemover.removeSession(termService, tab)
-        } else if (tab is XSessionTab) {
-          SessionRemover.removeXSession(termService, tab)
+        override fun onSwitcherHidden(tabSwitcher: TabSwitcher) {
+          toolbar.navigationIcon = null
+          toolbar.setNavigationOnClickListener(null)
+          toolbar.setBackgroundResource(R.color.colorPrimary)
         }
-      }
 
-      override fun onAllTabsRemoved(tabSwitcher: TabSwitcher, tabs: Array<out Tab>, animation: Animation) {
-      }
-    })
+        override fun onSelectionChanged(tabSwitcher: TabSwitcher, selectedTabIndex: Int, selectedTab: Tab?) {
+          if (selectedTab is TermTab && selectedTab.termData.termSession != null) {
+            NeoPreference.storeCurrentSession(selectedTab.termData.termSession!!)
+          }
+        }
+
+        override fun onTabAdded(tabSwitcher: TabSwitcher, index: Int, tab: Tab, animation: Animation) {
+          update_colors()
+        }
+
+        override fun onTabRemoved(tabSwitcher: TabSwitcher, index: Int, tab: Tab, animation: Animation) {
+          if (tab is TermTab) {
+            SessionRemover.removeSession(termService, tab)
+          } else if (tab is XSessionTab) {
+            SessionRemover.removeXSession(termService, tab)
+          }
+        }
+
+        override fun onAllTabsRemoved(tabSwitcher: TabSwitcher, tabs: Array<out Tab>, animation: Animation) {
+        }
+      },
+    )
     val tab = tabSwitcher.selectedTab as NeoTab?
     tab?.onResume()
   }
@@ -300,9 +301,12 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
           || grantResults[0] != PackageManager.PERMISSION_GRANTED
         ) {
           AlertDialog.Builder(this).setMessage(R.string.permission_denied)
-            .setPositiveButton(android.R.string.ok, { _: DialogInterface, _: Int ->
-              finish()
-            })
+            .setPositiveButton(
+              android.R.string.ok,
+              { _: DialogInterface, _: Int ->
+                finish()
+              },
+            )
             .show()
         }
         return
@@ -329,6 +333,7 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     }
   }
 
+  @RequiresApi(Build.VERSION_CODES.P)
   override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
     termService = (service as NeoTermService.NeoTermBinder).service
     if (termService == null) {
@@ -336,23 +341,47 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
       return
     }
 
+    // Always update the file on the opening of this app
+    Runtime.getRuntime().exec("mkdir -p "+" "+"/data/data/com.offsec.nhterm/files/usr").destroy();
+    extractAssetsDir("bin", "/data/data/com.offsec.nhterm/files/usr/bin/")
+    Thread.sleep(500)
+    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/bash")
+    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/kali")
+
     if (!isRecreating()) {
       if (SetupHelper.needSetup()) {
         val intent = Intent(this, SetupActivity::class.java)
-        startActivityForResult(intent, REQUEST_SETUP)
-        return
+        //startActivityForResult(intent, REQUEST_SETUP)
+        //return
       }
       enterMain()
       update_colors()
     }
   }
 
+  fun Executer(command: String?): String? {
+    val output = StringBuilder()
+    val p: Process
+    try {
+      p = Runtime.getRuntime().exec(command)
+      p.waitFor()
+      val reader = BufferedReader(InputStreamReader(p.inputStream))
+      var line: String?
+      while (reader.readLine().also { line = it } != null) {
+        output.append(line).append('\n')
+      }
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
+    return output.toString()
+  }
+
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     when (requestCode) {
       REQUEST_SETUP -> {
         when (resultCode) {
-          AppCompatActivity.RESULT_OK -> enterMain()
-          AppCompatActivity.RESULT_CANCELED -> {
+          RESULT_OK -> enterMain()
+          RESULT_CANCELED -> {
             setSystemShellMode(true)
             forceAddSystemSession()
           }
@@ -404,7 +433,7 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
         // app shortcuts
         addNewSession(
           null,
-          false, createRevealAnimation()
+          false, createRevealAnimation(),
         )
       } else {
         switchToSession(lastSession)
@@ -466,18 +495,24 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
 
     AlertDialog.Builder(this)
       .setTitle(R.string.new_session_with_profile)
-      .setItems(profiles.map { it.profileName }.toTypedArray(), { dialog, which ->
-        val selectedProfile = profilesShell[which]
-        addNewSessionWithProfile(selectedProfile)
-      })
+      .setItems(
+        profiles.map { it.profileName }.toTypedArray(),
+        { dialog, which ->
+          val selectedProfile = profilesShell[which]
+          addNewSessionWithProfile(selectedProfile)
+        },
+      )
       .setPositiveButton(android.R.string.no, null)
       .show()
   }
 
-  private fun addNewSession() = addNewSessionWithProfile(ShellProfile.create())
+  private fun addNewSession() {
+    addNewNetHunterSession("KALI LINUX")
+  }
 
-  private fun addNewSession(sessionName: String?, systemShell: Boolean, animation: Animation) =
-    addNewSessionWithProfile(sessionName, systemShell, animation, ShellProfile.create())
+  private fun addNewSession(sessionName: String?, systemShell: Boolean, animation: Animation) {
+    addNewNetHunterSession("KALI LINUX")
+  }
 
   private fun addNewSessionWithProfile(profile: ShellProfile) {
     if (!tabSwitcher.isSwitcherShown) {
@@ -485,13 +520,13 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     }
     addNewSessionWithProfile(
       null, getSystemShellMode(),
-      createRevealAnimation(), profile
+      createRevealAnimation(), profile,
     )
   }
 
   private fun addNewSessionWithProfile(
     sessionName: String?, systemShell: Boolean,
-    animation: Animation, profile: ShellProfile
+    animation: Animation, profile: ShellProfile,
   ) {
     val sessionCallback = TermSessionCallback()
     val viewClient = TermViewClient(this)
@@ -511,7 +546,44 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     switchToSession(tab)
   }
 
-  private fun addNewSessionFromExisting(session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  private fun addNewAndroidSession(sessionName: String?) {
+    val sessionCallback = TermSessionCallback()
+    val viewClient = TermViewClient(this)
+
+    val parameter = ShellParameter()
+      .callback(sessionCallback)
+      .executablePath("/system/bin/sh")
+    val session = termService!!.createTermSession(parameter)
+
+    session.mSessionName = sessionName ?: generateSessionName("Android")
+
+    val tab = createTab(session.mSessionName) as TermTab
+    tab.termData.initializeSessionWith(session, sessionCallback, viewClient)
+
+    addNewTab(tab, createRevealAnimation())
+    switchToSession(tab)
+  }
+
+  private fun addNewNetHunterSession(sessionName: String?) {
+    val sessionCallback = TermSessionCallback()
+    val viewClient = TermViewClient(this)
+    val parameter = ShellParameter()
+      .callback(sessionCallback)
+      .systemShell(false)
+      .executablePath("/data/data/com.offsec.nhterm/files/usr/bin/kali")
+      .initialCommand("su -c " + '"' + "clear && " + NeoPreference.getLoginShellName() + '"')
+    val session = termService!!.createTermSession(parameter)
+
+    session.mSessionName = sessionName ?: generateSessionName("KALI Linux")
+
+    val tab = createTab(session.mSessionName) as TermTab
+    tab.termData.initializeSessionWith(session, sessionCallback, viewClient)
+
+    addNewTab(tab, createRevealAnimation())
+    switchToSession(tab)
+  }
+
+  private fun addNewSessionFromExisting(session: TerminalSession?) {
     if (session == null) {
       return
     }
@@ -586,7 +658,7 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     return "$prefix #${termService!!.xSessions.size}"
   }
 
-  private fun switchToSession(session: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  private fun switchToSession(session: TerminalSession?) {
     if (session == null) {
       return
     }
@@ -611,7 +683,7 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     tabSwitcher.addTab(tab, 0, animation)
   }
 
-  private fun getStoredCurrentSessionOrLast(): _root_ide_package_.com.offsec.nhterm.backend.TerminalSession? {
+  private fun getStoredCurrentSessionOrLast(): TerminalSession? {
     val stored = NeoPreference.getCurrentSession(termService)
     if (stored != null) return stored
     val numberOfSessions = termService!!.sessions.size
@@ -679,7 +751,7 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
       tabSwitcher.setPadding(
         insets.systemWindowInsetLeft,
         insets.systemWindowInsetTop, insets.systemWindowInsetRight,
-        insets.systemWindowInsetBottom
+        insets.systemWindowInsetBottom,
       )
       insets
     }
@@ -790,16 +862,19 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
 
   fun update_colors() {
     // Simple fix to bug on custom color
-    Handler().postDelayed({
+    Handler().postDelayed(
+      {
 
-      if (tabSwitcher.count > 0) {
-        val tab = tabSwitcher.selectedTab
-        if (tab is TermTab) {
-          tab.updateColorScheme()
+        if (tabSwitcher.count > 0) {
+          val tab = tabSwitcher.selectedTab
+          if (tab is TermTab) {
+            tab.updateColorScheme()
+          }
         }
-      }
 
-    }, 500)
+      },
+      500,
+    )
   }
 
 }

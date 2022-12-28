@@ -6,9 +6,9 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
-import io.nhterm.R
-import io.nhterm.component.config.NeoTermPath
-import io.nhterm.frontend.floating.TerminalDialog
+import com.offsec.nhterm.R
+import com.offsec.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.frontend.floating.TerminalDialog
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.text.DecimalFormat

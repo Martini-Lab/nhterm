@@ -3,14 +3,14 @@ package com.offsec.nhterm.component.colorscheme
 import io.neolang.frontend.ConfigVisitor
 import com.offsec.nhterm.backend.TerminalColorScheme
 import com.offsec.nhterm.backend.TerminalColors
-import io.nhterm.component.ConfigFileBasedObject
-import io.nhterm.component.codegen.CodeGenObject
-import io.nhterm.component.codegen.CodeGenParameter
-import io.nhterm.component.codegen.CodeGenerator
-import io.nhterm.component.codegen.NeoColorGenerator
+import com.offsec.nhterm.component.ConfigFileBasedObject
+import com.offsec.nhterm.component.codegen.CodeGenObject
+import com.offsec.nhterm.component.codegen.CodeGenParameter
+import com.offsec.nhterm.component.codegen.CodeGenerator
+import com.offsec.nhterm.component.codegen.NeoColorGenerator
 import com.offsec.nhterm.frontend.session.view.TerminalView
-import io.nhterm.frontend.session.view.extrakey.ExtraKeysView
-import io.nhterm.utils.NLog
+import com.offsec.nhterm.frontend.session.view.extrakey.ExtraKeysView
+import com.offsec.nhterm.utils.NLog
 
 open class NeoColorScheme : CodeGenObject, ConfigFileBasedObject {
   companion object {
@@ -129,22 +129,22 @@ open class NeoColorScheme : CodeGenObject, ConfigFileBasedObject {
     validateColors()
   }
 
-  internal fun applyColorScheme(view: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView?, extraKeysView: ExtraKeysView?) {
+  internal fun applyColorScheme(view: TerminalView?, extraKeysView: ExtraKeysView?) {
     validateColors()
 
     if (view != null) {
-      val scheme = _root_ide_package_.com.offsec.nhterm.backend.TerminalColorScheme()
+      val scheme = TerminalColorScheme()
       scheme.updateWith(foregroundColor, backgroundColor, cursorColor, color)
       val session = view.currentSession
       if (session != null && session.emulator != null) {
         session.emulator.setColorScheme(scheme)
       }
-      view.setBackgroundColor(_root_ide_package_.com.offsec.nhterm.backend.TerminalColors.parse(backgroundColor))
+      view.setBackgroundColor(TerminalColors.parse(backgroundColor))
     }
 
     if (extraKeysView != null) {
-      extraKeysView.setBackgroundColor(_root_ide_package_.com.offsec.nhterm.backend.TerminalColors.parse(backgroundColor))
-      extraKeysView.setTextColor(_root_ide_package_.com.offsec.nhterm.backend.TerminalColors.parse(foregroundColor))
+      extraKeysView.setBackgroundColor(TerminalColors.parse(backgroundColor))
+      extraKeysView.setTextColor(TerminalColors.parse(foregroundColor))
     }
   }
 

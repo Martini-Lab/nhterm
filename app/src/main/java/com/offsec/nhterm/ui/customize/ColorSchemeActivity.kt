@@ -16,13 +16,13 @@ import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter
 import es.dmoral.coloromatic.ColorOMaticDialog
 import es.dmoral.coloromatic.IndicatorMode
 import es.dmoral.coloromatic.colormode.ColorMode
-import io.nhterm.R
+import com.offsec.nhterm.R
 import com.offsec.nhterm.backend.TerminalColors
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.colorscheme.ColorSchemeComponent
-import io.nhterm.component.colorscheme.NeoColorScheme
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.colorscheme.ColorSchemeComponent
+import com.offsec.nhterm.component.colorscheme.NeoColorScheme
 import com.offsec.nhterm.frontend.session.view.TerminalView
-import io.nhterm.utils.Terminals
+import com.offsec.nhterm.utils.Terminals
 
 
 /**
@@ -48,7 +48,7 @@ class ColorSchemeActivity : BaseCustomizeActivity() {
     editingColorScheme = colorSchemeComponent.getCurrentColorScheme().copy()
     editingColorScheme.colorName = ""
 
-    val terminalView = findViewById<_root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView>(R.id.terminal_view)
+    val terminalView = findViewById<TerminalView>(R.id.terminal_view)
     Terminals.setupTerminalView(terminalView, null)
 
     adapter = ColorItemAdapter(this, editingColorScheme, COMPARATOR, object : ColorItemAdapter.Listener {
@@ -67,12 +67,12 @@ class ColorSchemeActivity : BaseCustomizeActivity() {
     return true
   }
 
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item?.itemId) {
       android.R.id.home -> finish()
       R.id.action_done -> applyColorScheme(editingColorScheme)
     }
-    return super.onOptionsItemSelected(item)
+    return item?.let { super.onOptionsItemSelected(it) }
   }
 
   override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
@@ -99,12 +99,12 @@ class ColorSchemeActivity : BaseCustomizeActivity() {
     val edit = view.findViewById<EditText>(R.id.dialog_edit_text_editor)
     edit.setText(model.colorValue)
     if (model.colorValue.isNotEmpty()) {
-      edit.setTextColor(_root_ide_package_.com.offsec.nhterm.backend.TerminalColors.parse(model.colorValue))
+      edit.setTextColor(TerminalColors.parse(model.colorValue))
     }
     edit.addTextChangedListener(object : TextWatcher {
       override fun afterTextChanged(editable: Editable?) {
         if (editable != null && editable.isNotEmpty()) {
-          val color = _root_ide_package_.com.offsec.nhterm.backend.TerminalColors.parse(editable.toString())
+          val color = TerminalColors.parse(editable.toString())
           if (color != 0) {
             edit.setTextColor(color)
           } else {
@@ -138,7 +138,7 @@ class ColorSchemeActivity : BaseCustomizeActivity() {
       }
       .setNeutralButton(R.string.select_new_value) { _, _ ->
         ColorOMaticDialog.Builder()
-          .initialColor(_root_ide_package_.com.offsec.nhterm.backend.TerminalColors.parse(model.colorValue))
+          .initialColor(TerminalColors.parse(model.colorValue))
           .colorMode(ColorMode.RGB)
           .indicatorMode(IndicatorMode.HEX)
           .onColorSelected { newColor ->

@@ -17,7 +17,7 @@ import android.view.animation.PathInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import io.nhterm.R
+import com.offsec.nhterm.R
 
 /**
  * @author kiva

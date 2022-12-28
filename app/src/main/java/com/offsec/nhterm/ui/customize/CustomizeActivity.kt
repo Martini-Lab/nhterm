@@ -8,12 +8,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
-import io.nhterm.R
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.colorscheme.ColorSchemeComponent
-import io.nhterm.component.config.NeoTermPath
-import io.nhterm.component.font.FontComponent
-import io.nhterm.utils.getPathOfMediaUri
+import com.offsec.nhterm.R
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.colorscheme.ColorSchemeComponent
+import com.offsec.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.component.font.FontComponent
+import com.offsec.nhterm.utils.getPathOfMediaUri
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -144,10 +144,10 @@ class CustomizeActivity : BaseCustomizeActivity() {
     }
   }
 
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item?.itemId) {
       android.R.id.home -> finish()
     }
-    return super.onOptionsItemSelected(item)
+    return item?.let { super.onOptionsItemSelected(it) }
   }
 }

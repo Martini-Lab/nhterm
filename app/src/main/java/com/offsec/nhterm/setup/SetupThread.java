@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.offsec.nhterm.utils.NLog;
 import com.offsec.nhterm.backend.EmulatorDebug;
-import io.nhterm.component.config.NeoTermPath;
-import io.nhterm.utils.NLog;
+import com.offsec.nhterm.component.config.NeoTermPath;
+import com.offsec.nhterm.utils.NLog;
 
 import java.io.*;
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
 package com.offsec.nhterm.ui.term
 
 import com.offsec.nhterm.backend.TerminalSession
-import io.nhterm.component.session.XSession
-import io.nhterm.services.NeoTermService
+import com.offsec.nhterm.component.session.XSession
+import com.offsec.nhterm.services.NeoTermService
 
 /**
  * @author kiva
@@ -18,7 +18,7 @@ object SessionRemover {
     removeFinishedSession(termService, tab?.session)
   }
 
-  private fun removeFinishedSession(termService: NeoTermService?, finishedSession: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  private fun removeFinishedSession(termService: NeoTermService?, finishedSession: TerminalSession?) {
     if (termService == null || finishedSession == null) {
       return
     }

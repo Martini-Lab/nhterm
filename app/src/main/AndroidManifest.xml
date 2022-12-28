@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="io.neoterm">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.offsec.nhterm"
+          android:sharedUserId="com.offsec.nhterm">
 
   <uses-feature
     android:name="android.hardware.touchscreen"
@@ -11,7 +13,8 @@
 
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+                   tools:ignore="ScopedStorage"/>
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.WAKE_LOCK"/>
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -35,7 +38,8 @@
       android:configChanges="orientation|keyboardHidden|screenSize"
       android:launchMode="singleTask"
       android:theme="@style/AppTheme.NoActionBar.Dark"
-      android:windowSoftInputMode="adjustResize|stateHidden">
+      android:windowSoftInputMode="adjustResize|stateHidden"
+      android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
@@ -53,7 +57,8 @@
 
     <activity-alias
       android:name=".NeoLotMainActivity"
-      android:targetActivity="io.neoterm.ui.term.NeoTermActivity">
+      android:exported="true"
+      android:targetActivity=".ui.term.NeoTermActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 

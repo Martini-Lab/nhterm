@@ -6,30 +6,30 @@ import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AlertDialog
-import io.nhterm.R
+import com.offsec.nhterm.R
 import com.offsec.nhterm.backend.TerminalSession
-import io.nhterm.component.session.ShellParameter
-import io.nhterm.component.session.ShellTermSession
-import io.nhterm.frontend.session.terminal.BasicSessionCallback
-import io.nhterm.frontend.session.terminal.BasicViewClient
+import com.offsec.nhterm.component.session.ShellParameter
+import com.offsec.nhterm.component.session.ShellTermSession
+import com.offsec.nhterm.frontend.session.terminal.BasicSessionCallback
+import com.offsec.nhterm.frontend.session.terminal.BasicViewClient
 import com.offsec.nhterm.frontend.session.view.TerminalView
 import com.offsec.nhterm.frontend.session.view.TerminalViewClient
-import io.nhterm.utils.Terminals
+import com.offsec.nhterm.utils.Terminals
 
-typealias DialogSessionFinished = (TerminalDialog, _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) -> Unit
+typealias DialogSessionFinished = (TerminalDialog, TerminalSession?) -> Unit
 
 class TerminalDialog(val context: Context) {
   private val termWindowView = WindowTermView(context)
   private val terminalSessionCallback: BasicSessionCallback
   private var dialog: AlertDialog? = null
-  private var terminalSession: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession? = null
+  private var terminalSession: TerminalSession? = null
   private var sessionFinishedCallback: DialogSessionFinished? = null
   private var cancelListener: DialogInterface.OnCancelListener? = null
 
   init {
     termWindowView.setTerminalViewClient(BasicViewClient(termWindowView.terminalView))
     terminalSessionCallback = object : BasicSessionCallback(termWindowView.terminalView) {
-      override fun onSessionFinished(finishedSession: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+      override fun onSessionFinished(finishedSession: TerminalSession?) {
         sessionFinishedCallback?.let { it(this@TerminalDialog, finishedSession) }
         super.onSessionFinished(finishedSession)
       }
@@ -100,18 +100,18 @@ class WindowTermView(val context: Context) {
   @SuppressLint("InflateParams")
   var rootView: View = LayoutInflater.from(context).inflate(R.layout.ui_term_dialog, null, false)
     private set
-  var terminalView: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView = rootView.findViewById<_root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalView>(R.id.terminal_view_dialog)
+  var terminalView: TerminalView = rootView.findViewById<TerminalView>(R.id.terminal_view_dialog)
     private set
 
   init {
     Terminals.setupTerminalView(terminalView)
   }
 
-  fun setTerminalViewClient(terminalViewClient: _root_ide_package_.com.offsec.nhterm.frontend.session.view.TerminalViewClient?) {
+  fun setTerminalViewClient(terminalViewClient: com.offsec.nhterm.frontend.session.view.TerminalViewClient?) {
     terminalView.setTerminalViewClient(terminalViewClient)
   }
 
-  fun attachSession(terminalSession: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession?) {
+  fun attachSession(terminalSession: TerminalSession?) {
     terminalView.attachSession(terminalSession)
   }
 

@@ -1,10 +1,10 @@
 package com.offsec.nhterm.component.extrakey
 
 import io.neolang.frontend.ConfigVisitor
-import io.nhterm.component.ConfigFileBasedObject
-import io.nhterm.frontend.session.view.extrakey.ExtraKeysView
-import io.nhterm.frontend.session.view.extrakey.IExtraButton
-import io.nhterm.frontend.session.view.extrakey.TextButton
+import com.offsec.nhterm.component.ConfigFileBasedObject
+import com.offsec.nhterm.frontend.session.view.extrakey.ExtraKeysView
+import com.offsec.nhterm.frontend.session.view.extrakey.IExtraButton
+import com.offsec.nhterm.frontend.session.view.extrakey.TextButton
 
 /**
  * @author kiva

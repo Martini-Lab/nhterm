@@ -34,7 +34,7 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
-import io.nhterm.R;
+import com.offsec.nhterm.R;
 
 public class RecyclerTabLayout extends RecyclerView {
 

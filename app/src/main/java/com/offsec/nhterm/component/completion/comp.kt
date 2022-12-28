@@ -1,6 +1,6 @@
 package com.offsec.nhterm.component.completion
 
-import io.nhterm.component.NeoComponent
+import com.offsec.nhterm.component.NeoComponent
 
 class CompletionComponent : NeoComponent {
   override fun onServiceInit() {

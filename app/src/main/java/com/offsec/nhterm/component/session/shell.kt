@@ -3,17 +3,17 @@ package com.offsec.nhterm.component.session
 import android.content.Context
 import io.neolang.frontend.ConfigVisitor
 import com.offsec.nhterm.App
-import io.nhterm.R
+import com.offsec.nhterm.R
 import com.offsec.nhterm.backend.TerminalSession
-import io.nhterm.bridge.SessionId
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.colorscheme.ColorSchemeComponent
-import io.nhterm.component.config.DefaultValues
-import io.nhterm.component.config.NeoPreference
-import io.nhterm.component.config.NeoTermPath
-import io.nhterm.component.font.FontComponent
-import io.nhterm.component.profile.NeoProfile
-import io.nhterm.frontend.session.terminal.TermSessionCallback
+import com.offsec.nhterm.bridge.SessionId
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.colorscheme.ColorSchemeComponent
+import com.offsec.nhterm.component.config.DefaultValues
+import com.offsec.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.component.font.FontComponent
+import com.offsec.nhterm.component.profile.NeoProfile
+import com.offsec.nhterm.frontend.session.terminal.TermSessionCallback
 import java.io.File
 
 /**
@@ -26,7 +26,7 @@ class ShellParameter {
   var cwd: String? = null
   var initialCommand: String? = null
   var env: Array<Pair<String, String>>? = null
-  var sessionCallback: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession.SessionChangedCallback? = null
+  var sessionCallback: TerminalSession.SessionChangedCallback? = null
   var systemShell: Boolean = false
   var shellProfile: ShellProfile? = null
 
@@ -55,7 +55,7 @@ class ShellParameter {
     return this
   }
 
-  fun callback(callback: _root_ide_package_.com.offsec.nhterm.backend.TerminalSession.SessionChangedCallback?): ShellParameter {
+  fun callback(callback: TerminalSession.SessionChangedCallback?): ShellParameter {
     this.sessionCallback = callback
     return this
   }
@@ -167,9 +167,9 @@ open class ShellTermSession private constructor(
   changeCallback: SessionChangedCallback,
   private val initialCommand: String?,
   val shellProfile: ShellProfile
-) : _root_ide_package_.com.offsec.nhterm.backend.TerminalSession(shellPath, cwd, args, env, changeCallback) {
+) : TerminalSession(shellPath, cwd, args, env, changeCallback) {
 
-  var exitPrompt = _root_ide_package_.com.offsec.nhterm.App.get().getString(R.string.process_exit_prompt)
+  var exitPrompt = App.get().getString(R.string.process_exit_prompt)
 
   override fun initializeEmulator(columns: Int, rows: Int) {
     super.initializeEmulator(columns, rows)
@@ -179,7 +179,7 @@ open class ShellTermSession private constructor(
 
   override fun getExitDescription(exitCode: Int): String {
     val builder = StringBuilder("\r\n[")
-    val context = _root_ide_package_.com.offsec.nhterm.App.get()
+    val context = App.get()
     builder.append(context.getString(R.string.process_exit_info))
     if (exitCode > 0) {
       // Non-zero process exit.
@@ -334,56 +334,38 @@ open class ShellTermSession private constructor(
       val androidRootEnv = "ANDROID_ROOT=" + System.getenv("ANDROID_ROOT")
       val androidDataEnv = "ANDROID_DATA=" + System.getenv("ANDROID_DATA")
       val externalStorageEnv = "EXTERNAL_STORAGE=" + System.getenv("EXTERNAL_STORAGE")
+      val bootclasspath = "BOOTCLASSPATH=" + System.getenv("BOOTCLASSPATH")
+      val androidartroot = "ANDROID_ART_ROOT=" + System.getenv("ANDROID_ART_ROOT")
+      val dex2oatbootclasspath = "DEX2OATBOOTCLASSPATH=" + System.getenv("DEX2OATBOOTCLASSPATH")
+      val androidi18nroot = "ANDROID_I18N_ROOT=" + System.getenv("ANDROID_I18N_ROOT")
+      val androidruntimeroot = "ANDROID_RUNTIME_ROOT=" + System.getenv("ANDROID_RUNTIME_ROOT")
+      val androidtzdata = "ANDROID_TZDATA_ROOT=" + System.getenv("ANDROID_TZDATA_ROOT")
       val colorterm = "COLORTERM=truecolor"
-
-      // PY Trade: Some programs support NeoTerm in a special way.
-      val neotermIdEnv = "__NEOTERM=1"
-      val originPathEnv = "__NEOTERM_ORIGIN_PATH=" + buildOriginPathEnv()
-      val originLdEnv = "__NEOTERM_ORIGIN_LD_LIBRARY_PATH=" + buildOriginLdLibEnv()
+      val ldEnv = "LD_LIBRARY_PATH=" + buildLdLibraryEnv()
+      val pwdEnv = "PWD=$selectedCwd"
+      val tmpdirEnv = "TMPDIR=${NeoTermPath.USR_PATH}/tmp"
+      val langEnv = "LANG=en_US.UTF-8"
 
       return if (systemShell) {
         val pathEnv = "PATH=" + System.getenv("PATH")
         arrayOf(
-          termEnv, homeEnv, androidRootEnv, androidDataEnv,
-          externalStorageEnv, pathEnv, neotermIdEnv, prefixEnv,
-          originLdEnv, originPathEnv, colorterm
+          termEnv, pwdEnv, homeEnv, androidRootEnv, androidDataEnv,
+          externalStorageEnv, pathEnv, prefixEnv,
+          bootclasspath, androidi18nroot, androidartroot,
+          dex2oatbootclasspath, androidruntimeroot, androidtzdata, colorterm,
+          tmpdirEnv, ldEnv, langEnv
         )
 
       } else {
-        val ps1Env = "PS1=$ "
         val langEnv = "LANG=en_US.UTF-8"
-        val pathEnv = "PATH=" + buildPathEnv()
-        val ldEnv = "LD_LIBRARY_PATH=" + buildLdLibraryEnv()
-        val pwdEnv = "PWD=$selectedCwd"
-        val tmpdirEnv = "TMPDIR=${NeoTermPath.USR_PATH}/tmp"
+        val pathEnv = "PATH=" + buildPathEnv() + System.getenv("PATH")
 
-
-        // execve(2) wrapper to avoid incorrect shebang
-        val ldPreloadEnv = if (shellProfile.enableExecveWrapper) {
-          "LD_PRELOAD=${_root_ide_package_.com.offsec.nhterm.App.get().applicationInfo.nativeLibraryDir}/libnexec.so"
-        } else {
-          ""
-        }
-
-        arrayOf(
-          termEnv, homeEnv, ps1Env, ldEnv, langEnv, pathEnv, pwdEnv,
-          androidRootEnv, androidDataEnv, externalStorageEnv,
-          tmpdirEnv, neotermIdEnv, originPathEnv, originLdEnv,
-          ldPreloadEnv, prefixEnv, colorterm
+        arrayOf(termEnv, pwdEnv, pathEnv,
+          colorterm, langEnv
         )
       }
         .filter { it.isNotEmpty() }
         .toTypedArray()
-    }
-
-    private fun buildOriginPathEnv(): String {
-      val path = System.getenv("PATH")
-      return path ?: ""
-    }
-
-    private fun buildOriginLdLibEnv(): String {
-      val path = System.getenv("LD_LIBRARY_PATH")
-      return path ?: ""
     }
 
     private fun buildLdLibraryEnv(): String {
@@ -391,7 +373,7 @@ open class ShellTermSession private constructor(
     }
 
     private fun buildPathEnv(): String {
-      return "${NeoTermPath.USR_PATH}/bin:${NeoTermPath.USR_PATH}/bin/applets"
+      return "${NeoTermPath.USR_PATH}/bin"
     }
   }
 }

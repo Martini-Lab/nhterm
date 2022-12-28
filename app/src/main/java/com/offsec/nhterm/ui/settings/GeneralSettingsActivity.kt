@@ -3,9 +3,9 @@ package com.offsec.nhterm.ui.settings
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import io.nhterm.R
-import io.nhterm.component.config.NeoPreference
-import io.nhterm.utils.runApt
+import com.offsec.nhterm.R
+import com.offsec.nhterm.component.config.NeoPreference
+import com.offsec.nhterm.utils.runApt
 
 /**
  * @author kiva
@@ -50,10 +50,10 @@ class GeneralSettingsActivity : BasePreferenceActivity() {
   override fun onBuildHeaders(target: MutableList<Header>?) {
   }
 
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item?.itemId) {
       android.R.id.home -> finish()
     }
-    return super.onOptionsItemSelected(item)
+    return item?.let { super.onOptionsItemSelected(it) }
   }
 }

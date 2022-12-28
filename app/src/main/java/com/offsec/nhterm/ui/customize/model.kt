@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter
 import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
-import io.nhterm.App
-import io.nhterm.R
+import com.offsec.nhterm.App
+import com.offsec.nhterm.R
 import com.offsec.nhterm.backend.TerminalColors
-import io.nhterm.component.colorscheme.NeoColorScheme
+import com.offsec.nhterm.component.colorscheme.NeoColorScheme
 
 /**
  * @author kiva
@@ -82,7 +82,7 @@ class ColorItemViewHolder(private val rootView: View, private val listener: Colo
     colorItemName.text = item.colorName
     colorItemDesc.text = item.colorValue
     if (item.colorValue.isNotEmpty()) {
-      val color = _root_ide_package_.com.offsec.nhterm.backend.TerminalColors.parse(item.colorValue)
+      val color = TerminalColors.parse(item.colorValue)
       colorView.setBackgroundColor(color)
       colorItemDesc.setTextColor(color)
     }

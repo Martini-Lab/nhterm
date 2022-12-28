@@ -3,10 +3,10 @@ package com.offsec.nhterm.component.userscript
 import android.content.Context
 import android.system.Os
 import com.offsec.nhterm.App
-import io.nhterm.component.NeoComponent
-import io.nhterm.component.config.NeoTermPath
-import io.nhterm.utils.NLog
-import io.nhterm.utils.extractAssetsDir
+import com.offsec.nhterm.component.NeoComponent
+import com.offsec.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.utils.NLog
+import com.offsec.nhterm.utils.extractAssetsDir
 import java.io.File
 
 class UserScript(val scriptFile: File)
@@ -32,7 +32,7 @@ class UserScriptComponent : NeoComponent {
   }
 
   private fun checkForFiles() {
-    extractDefaultScript(_root_ide_package_.com.offsec.nhterm.App.get())
+    extractDefaultScript(App.get())
     reloadScripts()
   }
 

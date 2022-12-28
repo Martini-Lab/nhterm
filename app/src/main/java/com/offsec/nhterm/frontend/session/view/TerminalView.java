@@ -29,9 +29,9 @@ import com.offsec.nhterm.backend.TerminalEmulator;
 import com.offsec.nhterm.backend.TerminalSession;
 import com.offsec.nhterm.component.completion.OnAutoCompleteListener;
 
-import io.nhterm.R;
-import io.nhterm.backend.*;
-import io.nhterm.component.completion.OnAutoCompleteListener;
+import com.offsec.nhterm.R;
+import com.offsec.nhterm.backend.*;
+import com.offsec.nhterm.component.completion.OnAutoCompleteListener;
 
 /**
  * View displaying and interacting with a {@link TerminalSession}.

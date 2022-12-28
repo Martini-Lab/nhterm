@@ -5,8 +5,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import io.nhterm.App;
-import io.nhterm.framework.database.*;
+import com.offsec.nhterm.App;
+import com.offsec.nhterm.framework.database.*;
 
 import com.offsec.nhterm.framework.database.DatabaseDataType;
 import com.offsec.nhterm.framework.database.NeoTermSQLiteConfig;
@@ -17,7 +17,7 @@ import com.offsec.nhterm.framework.database.TableHelper;
 import com.offsec.nhterm.framework.database.ValueHelper;
 import com.offsec.nhterm.framework.database.bean.TableInfo;
 import com.offsec.nhterm.framework.reflection.Reflect;
-import io.nhterm.utils.NLog;
+import com.offsec.nhterm.utils.NLog;
 
 import java.io.File;
 import java.io.IOException;

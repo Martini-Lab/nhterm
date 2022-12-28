@@ -1,11 +1,11 @@
 package com.offsec.nhterm.component.pm
 
 import com.offsec.nhterm.App
-import io.nhterm.R
-import io.nhterm.component.ComponentManager
-import io.nhterm.component.config.NeoTermPath
+import com.offsec.nhterm.R
+import com.offsec.nhterm.component.ComponentManager
+import com.offsec.nhterm.component.config.NeoTermPath
 import com.offsec.nhterm.framework.NeoTermDatabase
-import io.nhterm.utils.NLog
+import com.offsec.nhterm.utils.NLog
 import java.io.File
 import java.net.URL
 import java.nio.file.Files
@@ -13,7 +13,7 @@ import java.nio.file.Paths
 
 object SourceHelper {
   fun syncSource() {
-    val sourceManager = ComponentManager.getComponent<_root_ide_package_.com.offsec.nhterm.component.pm.PackageComponent>().sourceManager
+    val sourceManager = ComponentManager.getComponent<PackageComponent>().sourceManager
     syncSource(sourceManager)
   }
 
@@ -29,7 +29,7 @@ object SourceHelper {
   }
 
   fun detectSourceFiles(): List<File> {
-    val sourceManager = ComponentManager.getComponent<_root_ide_package_.com.offsec.nhterm.component.pm.PackageComponent>().sourceManager
+    val sourceManager = ComponentManager.getComponent<PackageComponent>().sourceManager
     val sourceFiles = ArrayList<File>()
     try {
       val prefixes = sourceManager.getEnabledSources()
@@ -50,7 +50,7 @@ object SourceHelper {
     return sourceFiles
   }
 
-  fun detectSourceFilePrefix(source: _root_ide_package_.com.offsec.nhterm.component.pm.Source): String {
+  fun detectSourceFilePrefix(source: Source): String {
     try {
       val url = URL(source.url)
       val builder = StringBuilder(url.host)
@@ -74,15 +74,15 @@ object SourceHelper {
 }
 
 class SourceManager internal constructor() {
-  private val database = _root_ide_package_.com.offsec.nhterm.framework.NeoTermDatabase.instance("sources")
+  private val database = NeoTermDatabase.instance("sources")
 
   init {
-    if (database.findAll<_root_ide_package_.com.offsec.nhterm.component.pm.Source>(
-            _root_ide_package_.com.offsec.nhterm.component.pm.Source::class.java).isEmpty()) {
-      _root_ide_package_.com.offsec.nhterm.App.get().resources.getStringArray(R.array.pref_package_source_values)
+    if (database.findAll<Source>(
+            Source::class.java).isEmpty()) {
+      App.get().resources.getStringArray(R.array.pref_package_source_values)
         .forEach {
           database.saveBean(
-              _root_ide_package_.com.offsec.nhterm.component.pm.Source(
+              Source(
                   it,
                   "stable main",
                   true
@@ -94,7 +94,7 @@ class SourceManager internal constructor() {
 
   fun addSource(sourceUrl: String, repo: String, enabled: Boolean) {
     database.saveBean(
-        _root_ide_package_.com.offsec.nhterm.component.pm.Source(
+        Source(
             sourceUrl,
             repo,
             enabled
@@ -103,19 +103,19 @@ class SourceManager internal constructor() {
   }
 
   fun removeSource(sourceUrl: String) {
-    database.deleteBeanByWhere(_root_ide_package_.com.offsec.nhterm.component.pm.Source::class.java, "url == '$sourceUrl'")
+    database.deleteBeanByWhere(Source::class.java, "url == '$sourceUrl'")
   }
 
-  fun updateAll(sources: List<_root_ide_package_.com.offsec.nhterm.component.pm.Source>) {
+  fun updateAll(sources: List<Source>) {
     database.dropAllTable()
     database.saveBeans(sources)
   }
 
-  fun getAllSources(): List<_root_ide_package_.com.offsec.nhterm.component.pm.Source> {
-    return database.findAll(_root_ide_package_.com.offsec.nhterm.component.pm.Source::class.java)
+  fun getAllSources(): List<Source> {
+    return database.findAll(Source::class.java)
   }
 
-  fun getEnabledSources(): List<_root_ide_package_.com.offsec.nhterm.component.pm.Source> {
+  fun getEnabledSources(): List<Source> {
     return getAllSources().filter { it.enabled }
   }
 
