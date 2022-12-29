@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.IBinder
 import android.preference.PreferenceManager
-import android.system.Os
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
@@ -34,9 +33,6 @@ import com.offsec.nhterm.component.session.XParameter
 import com.offsec.nhterm.component.session.XSession
 import com.offsec.nhterm.frontend.session.terminal.*
 import com.offsec.nhterm.services.NeoTermService
-import com.offsec.nhterm.setup.SetupHelper
-import com.offsec.nhterm.ui.other.SetupActivity
-import com.offsec.nhterm.ui.pm.PackageManagerActivity
 import com.offsec.nhterm.ui.settings.SettingActivity
 import com.offsec.nhterm.utils.FullScreenHelper
 import com.offsec.nhterm.utils.NeoPermission
@@ -545,7 +541,7 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
       .profile(profile)
     val session = termService!!.createTermSession(parameter)
 
-    session.mSessionName = sessionName ?: generateSessionName("NeoTerm")
+    session.mSessionName = sessionName ?: generateSessionName("Kali Linux")
 
     val tab = createTab(session.mSessionName) as TermTab
     tab.termData.initializeSessionWith(session, sessionCallback, viewClient)
@@ -723,11 +719,11 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
   }
 
   private fun createTab(tabTitle: String?): Tab {
-    return postTabCreated(TermTab(tabTitle ?: "NeoTerm"))
+    return postTabCreated(TermTab(tabTitle ?: "Kali Linux"))
   }
 
   private fun createXTab(tabTitle: String?): Tab {
-    return postTabCreated(XSessionTab(tabTitle ?: "NeoTerm"))
+    return postTabCreated(XSessionTab(tabTitle ?: "Kali Linux"))
   }
 
   private fun <T : NeoTab> postTabCreated(tab: T): T {
