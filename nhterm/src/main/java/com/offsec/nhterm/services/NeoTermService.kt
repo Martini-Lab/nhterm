@@ -141,7 +141,7 @@ class NeoTermService : Service() {
 
     val sessionCount = mTerminalSessions.size
     val xSessionCount = mXSessions.size
-    var contentText = getString(R.string.service_status_text, sessionCount, xSessionCount)
+    var contentText = getString(R.string.service_status_text, sessionCount)
 
     val lockAcquired = mWakeLock != null
     if (lockAcquired) contentText += getString(R.string.service_lock_acquired)
@@ -181,8 +181,8 @@ class NeoTermService : Service() {
   private fun createNotificationChannel() {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
 
-    val channel = NotificationChannel(DEFAULT_CHANNEL_ID, "NeoTerm", NotificationManager.IMPORTANCE_LOW)
-    channel.description = "NeoTerm notifications"
+    val channel = NotificationChannel(DEFAULT_CHANNEL_ID, "NetHunter", NotificationManager.IMPORTANCE_LOW)
+    channel.description = "NetHunter notifications"
     val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     manager.createNotificationChannel(channel)
   }
