@@ -18,6 +18,7 @@ import de.psdev.licensesdialog.model.Notices
 import com.offsec.nhterm.App
 import com.offsec.nhterm.R
 import com.offsec.nhterm.utils.extractAssetsDir
+import de.psdev.licensesdialog.licenses.SILOpenFontLicense11
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -126,6 +127,14 @@ class AboutActivity : AppCompatActivity() {
           "https://github.com/NeoTerm/NeoTerm",
           "Copyright (c) 2021 imkiva",
           GnuGeneralPublicLicense30()
+        )
+      )
+      notices.addNotice(
+        Notice(
+          "Fira Code",
+          "https://github.com/tonsky/FiraCode",
+          "s",
+          SILOpenFontLicense11()
         )
       )
       LicensesDialog.Builder(this)

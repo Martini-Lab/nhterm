@@ -32,9 +32,9 @@
   <application
     android:name=".App"
     android:allowBackup="true"
-    android:banner="@drawable/banner"
     android:extractNativeLibs="true"
     android:fullBackupContent="@xml/backup_config"
+    android:banner="@drawable/banner"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
     android:usesCleartextTraffic="true"

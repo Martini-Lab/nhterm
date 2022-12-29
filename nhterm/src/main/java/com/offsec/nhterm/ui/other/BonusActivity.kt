@@ -100,7 +100,7 @@ class BonusActivity : AppCompatActivity() {
     im.translationZ = 20f
     im.scaleX = 0f
     im.scaleY = 0f
-    val platlogo = getDrawable(R.drawable.plat_logo)
+    val platlogo = getDrawable(R.drawable.ic_kali_logo)
     platlogo!!.alpha = 0
     im.setImageDrawable(platlogo)
     im.background = makeRipple()

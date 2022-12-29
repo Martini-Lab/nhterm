@@ -170,10 +170,9 @@ open class NeoColorScheme : CodeGenObject, ConfigFileBasedObject {
 object DefaultColorScheme : NeoColorScheme() {
   init {
     /* NOTE: Keep in sync with assets/colors/Default.nl */
-    colorName = "Default"
+    colorName = "Kali"
 
-    foregroundColor = "#ffffff"
-    backgroundColor = "#14181c"
+
     cursorColor = "#a9aaa9"
   }
 }
