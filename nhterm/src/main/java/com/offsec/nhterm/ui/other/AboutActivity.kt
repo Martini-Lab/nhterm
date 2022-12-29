@@ -133,7 +133,7 @@ class AboutActivity : AppCompatActivity() {
         Notice(
           "Fira Code",
           "https://github.com/tonsky/FiraCode",
-          "s",
+          "Copyright (c) 2022 Nikita Prokopov",
           SILOpenFontLicense11()
         )
       )
