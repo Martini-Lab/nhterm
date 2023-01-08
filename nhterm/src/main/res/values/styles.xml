@@ -47,4 +47,8 @@
     <item name="textAllCaps">true</item>
   </style>
 
+  <style name="app_toolbar" parent="@style/ThemeOverlay.AppCompat.Dark">
+    <item name="android:textStyle">normal</item>
+  </style>
+
 </resources>

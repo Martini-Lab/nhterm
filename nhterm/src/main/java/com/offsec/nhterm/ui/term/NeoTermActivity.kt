@@ -842,7 +842,6 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     }
   }
 
-  @Suppress("unused", "UNUSED_PARAMETER")
   @Subscribe(threadMode = ThreadMode.MAIN)
   fun onTitleChangedEvent(titleChangedEvent: TitleChangedEvent) {
     if (!tabSwitcher.isSwitcherShown) {
