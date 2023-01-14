@@ -101,6 +101,10 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
             val tab = tabSwitcher.selectedTab as TermTab
             // isShow -> toolbarHide
             toggleToolbar(tab.toolbar, !isShow)
+
+            // When minimizing kb in nano the colors get changed to default value
+            // Updating colors here fixes this issue
+            update_colors()
           }
         }
       },
@@ -354,8 +358,8 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     // Always update the files on the startup of this app
     // Great for noobies who delete stuff and ask why its broken
     Runtime.getRuntime().exec("mkdir -p "+" "+"/data/data/com.offsec.nhterm/files/usr/").waitFor()
-    Executer("/system/bin/rm -rf /data/data/com.offsec.nhterm/files/usr/bin")
-    Thread.sleep(400)
+    Runtime.getRuntime().exec("/system/bin/rm -rf /data/data/com.offsec.nhterm/files/usr/bin")
+    Thread.sleep(500)
     extractAssetsDir("bin", "/data/data/com.offsec.nhterm/files/usr/bin/")
     Thread.sleep(400)
     Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/bash") // Static bash for arm ( works for *64 too )
@@ -556,7 +560,9 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
 
     val parameter = ShellParameter()
       .callback(sessionCallback)
-      .executablePath("/system/bin/sh")
+      .executablePath("/data/data/com.offsec.nhterm/files/usr/bin/bash")
+      .systemShell(true)
+
     val session = termService!!.createTermSession(parameter)
 
     session.mSessionName = sessionName ?: generateSessionName("Android")
@@ -593,7 +599,11 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     val parameter = ShellParameter()
       .callback(sessionCallback)
       .executablePath("/data/data/com.offsec.nhterm/files/usr/bin/android-su")
+      .systemShell(true)
+      .initialCommand("export PS1='\\[\\e[1;32m\\]\\u [ \\[\\e[0m\\]\\w\\[\\e[1;32m\\] ]\$ \\[\\e[0m\\]' && clear")
+
     val session = termService!!.createTermSession(parameter)
+    generateSessionName("Android")
 
     session.mSessionName = sessionName ?: generateSessionName("ANDROID SU")
 
@@ -719,7 +729,7 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
   }
 
   private fun createTab(tabTitle: String?): Tab {
-    return postTabCreated(TermTab(tabTitle ?: "Kali Linux"))
+    return postTabCreated(TermTab(tabTitle ?: "Android"))
   }
 
   private fun createXTab(tabTitle: String?): Tab {
@@ -893,7 +903,7 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
         }
 
       },
-      500,
+      100,
     )
   }
 

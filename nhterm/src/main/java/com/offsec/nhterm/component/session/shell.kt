@@ -358,6 +358,7 @@ open class ShellTermSession private constructor(
       val pwdEnv = "PWD=$selectedCwd"
       val tmpdirEnv = "TMPDIR=${NeoTermPath.USR_PATH}/tmp"
       val langEnv = "LANG=en_US.UTF-8"
+      val ps1 = "PS1=\\[\\e[1;32m\\]\\u [ \\[\\e[0m\\]\\w\\[\\e[1;32m\\] ]\$ \\[\\e[0m\\]"
 
       return if (systemShell) {
         val pathEnv = "PATH=" + System.getenv("PATH")
@@ -366,7 +367,7 @@ open class ShellTermSession private constructor(
           externalStorageEnv, pathEnv, prefixEnv,
           bootclasspath, androidi18nroot, androidartroot,
           dex2oatbootclasspath, androidruntimeroot, androidtzdata, colorterm,
-          tmpdirEnv, ldEnv, langEnv
+          tmpdirEnv, ldEnv, langEnv, ps1
         )
 
       } else {
