@@ -137,6 +137,14 @@ class AboutActivity : AppCompatActivity() {
           SILOpenFontLicense11()
         )
       )
+      notices.addNotice(
+        Notice(
+          "Zed Fonts",
+          "https://github.com/zed-industries/zed-fonts",
+          "Copyright 2015-2021, Renzhi Li (aka. Belleve Invis, belleve@typeof.net)",
+          SILOpenFontLicense11()
+        )
+      )
       LicensesDialog.Builder(this)
         .setNotices(notices)
         .setIncludeOwnLicense(true)
