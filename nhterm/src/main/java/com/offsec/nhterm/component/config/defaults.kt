@@ -3,7 +3,7 @@ package com.offsec.nhterm.component.config
 import android.annotation.SuppressLint
 
 object DefaultValues {
-  const val fontSize = 30
+  const val fontSize = 28
 
   const val enableBell = false
   const val enableVibrate = true
@@ -27,7 +27,7 @@ object NeoTermPath {
   @SuppressLint("SdCardPath")
   const val ROOT_PATH = "/data/data/com.offsec.nhterm/files"
   const val USR_PATH = "$ROOT_PATH/usr"
-  const val HOME_PATH = "/"
+  const val HOME_PATH = "$USR_PATH/home"
   const val APT_BIN_PATH = "$USR_PATH/bin/apt"
   const val LIB_PATH = "$USR_PATH/lib"
 

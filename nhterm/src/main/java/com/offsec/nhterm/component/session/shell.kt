@@ -179,7 +179,7 @@ open class ShellTermSession private constructor(
     ////
     // As we do bash script trickery to move over from
     // System shell -> Kali chroot
-    // Then lets delay all initial cmd's for 2 seconds
+    // Then lets delay all initial cmd's for 1 seconds
     ////
 
     val backgroundExecutor: ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
@@ -187,7 +187,7 @@ open class ShellTermSession private constructor(
       {
         sendInitialCommand(shellProfile.initialCommand)
         sendInitialCommand(initialCommand)
-      }, 2, java.util.concurrent.TimeUnit.SECONDS)
+      }, 1, java.util.concurrent.TimeUnit.SECONDS)
   }
 
   override fun getExitDescription(exitCode: Int): String {
@@ -363,11 +363,11 @@ open class ShellTermSession private constructor(
       return if (systemShell) {
         val pathEnv = "PATH=" + System.getenv("PATH")
         arrayOf(
-          termEnv, pwdEnv, homeEnv, androidRootEnv, androidDataEnv,
+          termEnv, ps1, pwdEnv, homeEnv, androidRootEnv, androidDataEnv,
           externalStorageEnv, pathEnv, prefixEnv,
           bootclasspath, androidi18nroot, androidartroot,
           dex2oatbootclasspath, androidruntimeroot, androidtzdata, colorterm,
-          tmpdirEnv, ldEnv, langEnv, ps1
+          tmpdirEnv, ldEnv, langEnv
         )
 
       } else {

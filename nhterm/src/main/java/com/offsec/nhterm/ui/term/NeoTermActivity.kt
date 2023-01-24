@@ -185,6 +185,13 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
         addNewRootSession("Android SU")
         true
       }
+
+      // NHView ( start and stop sessions )
+      R.id.menu_item_new_nhview -> {
+        addNHView("NHView")
+        true
+      }
+
       else -> item?.let { super.onOptionsItemSelected(it) }
     }
   }
@@ -357,17 +364,18 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
   fun startup_assets() {
     // Always update the files on the startup of this app
     // Great for noobies who delete stuff and ask why its broken
-    Runtime.getRuntime().exec("mkdir -p "+" "+"/data/data/com.offsec.nhterm/files/usr/").waitFor()
+    Runtime.getRuntime().exec("mkdir -p "+" "+"/data/data/com.offsec.nhterm/files/usr/")
     Runtime.getRuntime().exec("/system/bin/rm -rf /data/data/com.offsec.nhterm/files/usr/bin")
     Thread.sleep(500)
     extractAssetsDir("bin", "/data/data/com.offsec.nhterm/files/usr/bin/")
     Thread.sleep(400)
-    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/bash") // Static bash for arm ( works for *64 too )
-    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/kali") // Kali chroot scriptlet
-    Executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/android-su") // Android su scriptlet
+    executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/bash") // Static bash for arm ( works for *64 too )
+    executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/kali") // Kali chroot scriptlet
+    executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/android-su") // Android su scriptlet
+    executer("/system/bin/chmod +x /data/data/com.offsec.nhterm/files/usr/bin/nhview") // NHView manager scriptlet
   }
 
-  fun Executer(command: String?): String? {
+  fun executer(command: String?): String? {
     val output = StringBuilder()
     val p: Process
     try {
@@ -574,6 +582,26 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
     switchToSession(tab)
   }
 
+  private fun addNHView(sessionName: String?) {
+    val sessionCallback = TermSessionCallback()
+    val viewClient = TermViewClient(this)
+
+    val parameter = ShellParameter()
+      .callback(sessionCallback)
+      .executablePath("/data/data/com.offsec.nhterm/files/usr/bin/nhview")
+      .systemShell(true)
+
+    val session = termService!!.createTermSession(parameter)
+
+    session.mSessionName = sessionName ?: generateSessionName("NHView start")
+
+    val tab = createTab(session.mSessionName) as TermTab
+    tab.termData.initializeSessionWith(session, sessionCallback, viewClient)
+
+    addNewTab(tab, createRevealAnimation())
+    switchToSession(tab)
+  }
+
   private fun addNewNetHunterSession(sessionName: String?) {
     val sessionCallback = TermSessionCallback()
     val viewClient = TermViewClient(this)
@@ -600,7 +628,6 @@ class NeoTermActivity : AppCompatActivity(), ServiceConnection, SharedPreference
       .callback(sessionCallback)
       .executablePath("/data/data/com.offsec.nhterm/files/usr/bin/android-su")
       .systemShell(true)
-      .initialCommand("export PS1='\\[\\e[1;32m\\]\\u [ \\[\\e[0m\\]\\w\\[\\e[1;32m\\] ]\$ \\[\\e[0m\\]' && clear")
 
     val session = termService!!.createTermSession(parameter)
     generateSessionName("Android")
