@@ -1,0 +1,84 @@
+#!/data/data/com.offsec.nhterm/files/usr/bin/bash
+whoami
+
+sudo() {
+	su -mm -c $@
+}
+
+node_out() {
+	target=/data/local/nhsystem/kalifs/tmp/root-0
+
+	sudo umount -l $target
+}
+
+node_bind() {
+	usr=/data/data/com.offsec.nhterm/files/usr
+	from=$usr/tmp
+	target=/data/local/nhsystem/kalifs/tmp/root-0
+
+	mkdir $from
+	sudo mkdir -p $target
+	sudo mount --bind $from $target
+}
+
+node_clear() {
+	target=/data/local/nhsystem/kalifs/tmp/root-0
+	usr=/data/data/com.offsec.nhterm/files/usr
+	orig=$usr/tmp/*
+
+	sudo rm -rf $target $orig
+	sudo rm -rf $orig
+	sudo mkdir -p $target
+}
+
+start() {
+	echo "Making sure that we start cleanly ( stopping )"
+	node_out
+	node_clear
+
+	echo "Re-binding tmp folder"
+	node_bind
+
+	echo "Restart youre nhview service"
+
+	exit
+}
+
+stop() {
+	echo "un-binding nodes"
+        node_out
+
+        echo "Removing leftovers in tmp"
+        node_clear
+
+	exit
+}
+
+say() {
+	echo "# $@"
+}
+
+ask() {
+	clear
+	echo "########"
+	say "[ NOTE ]: Before stopping please stop the session of nhviewer"
+	say ""
+	say "[ start ]: Mounts and binds needed things"
+	say "[ stop ]: Unmounts and clears needed things"
+}
+
+input() {
+	read -p "[ Please answer start or stop ]: " answ
+	case $answ in
+		start ) start;;
+		stop ) stop;;
+		* ) echo "Start or Stop only" && sleep 2 && main;;
+	esac
+}
+
+main() {
+	ask
+	input
+}
+
+main
